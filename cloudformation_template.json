@@ -1,0 +1,60 @@
+{
+    "Description": "An Ec2-classic stack with Couchbase Server, Sync Gateway + load testing tools ",
+    "Outputs": {
+        "InstanceAccess": {
+            "Description": "Command to use to SSH to instance",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "ssh -i ",
+                        {
+                            "Ref": "KeyName"
+                        },
+                        " ubuntu|ec2-user|root@",
+                        {
+                            "Fn::GetAtt": [
+                                "myinstance",
+                                "PublicDnsName"
+                            ]
+                        }
+                    ]
+                ]
+            }
+        }
+    },
+    "Parameters": {
+        "KeyName": {
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "MySecurityGroup": {
+            "Properties": {
+                "GroupDescription": "Allow access to MyInstance",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "ToPort": "22"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::SecurityGroup"
+        },
+        "myinstance": {
+            "Properties": {
+                "ImageId": "ami-951945d0",
+                "InstanceType": "t1.micro",
+                "SecurityGroups": [
+                    {
+                        "Ref": "MySecurityGroup"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        }
+    }
+}
