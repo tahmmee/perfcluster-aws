@@ -7,7 +7,7 @@
         }
     },
     "Resources": {
-        "MySecurityGroup": {
+        "CouchbaseSecurityGroup": {
             "Properties": {
                 "GroupDescription": "Allow access to MyInstance",
                 "SecurityGroupIngress": [
@@ -16,6 +16,14 @@
                         "FromPort": "22",
                         "IpProtocol": "tcp",
                         "ToPort": "22"
+                    },
+                    {
+                        "FromPort": "4369",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "4369"
                     }
                 ]
             },
@@ -30,7 +38,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "MySecurityGroup"
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -51,7 +59,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "MySecurityGroup"
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -72,7 +80,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "MySecurityGroup"
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [

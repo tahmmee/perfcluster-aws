@@ -24,7 +24,7 @@ keyname_param = t.add_parameter(Parameter(
 
 
 # Create a security group
-sg = ec2.SecurityGroup('MySecurityGroup')
+sg = ec2.SecurityGroup('CouchbaseSecurityGroup')
 sg.GroupDescription = "Allow access to MyInstance"
 sg.SecurityGroupIngress = [
     ec2.SecurityGroupRule(
@@ -32,7 +32,15 @@ sg.SecurityGroupIngress = [
         FromPort="22",
         ToPort="22",
         CidrIp="0.0.0.0/0",
-    )]
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="4369",
+        ToPort="4369",
+        SourceSecurityGroupId=Ref(sg),
+    ),
+
+]
 
 # Add security group to template
 t.add_resource(sg)
