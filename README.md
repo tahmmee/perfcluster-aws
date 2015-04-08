@@ -5,7 +5,7 @@ Automation to setup a performance test cluster on AWS with:
 * Sync Gateway nodes
 * Gateload and/or Gatling nodes
 
-Uses a Cloudformation template to spinup all instances.
+Uses a Cloudformation template to spin up all instances.
 
 ## How to generate CloudFormation template
 
@@ -24,3 +24,4 @@ Generate template after changes to the python file:
 ```
 $ python cloudformation_template.py > cloudformation_template.json
 ```
+

@@ -35,11 +35,46 @@ sg.SecurityGroupIngress = [
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
+        FromPort="8091",
+        ToPort="8091",
+        CidrIp="0.0.0.0/0",
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
         FromPort="4369",
         ToPort="4369",
         SourceSecurityGroupId=Ref(sg),
     ),
-
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="5984",
+        ToPort="5984",
+        SourceSecurityGroupId=Ref(sg),
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="8091",
+        ToPort="8091",
+        SourceSecurityGroupId=Ref(sg),
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="11210",
+        ToPort="11210",
+        SourceSecurityGroupId=Ref(sg),
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="11211",
+        ToPort="11211",
+        SourceSecurityGroupId=Ref(sg),
+    ),
+    ec2.SecurityGroupRule(
+        IpProtocol="tcp",
+        FromPort="21100",
+        ToPort="21299",
+        SourceSecurityGroupId=Ref(sg),
+    )
 ]
 
 # Add security group to template

@@ -18,12 +18,58 @@
                         "ToPort": "22"
                     },
                     {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "8091",
+                        "IpProtocol": "tcp",
+                        "ToPort": "8091"
+                    },
+                    {
                         "FromPort": "4369",
                         "IpProtocol": "tcp",
                         "SourceSecurityGroupId": {
                             "Ref": "CouchbaseSecurityGroup"
                         },
                         "ToPort": "4369"
+                    },
+                    {
+                        "FromPort": "5984",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "5984"
+                    },
+                    {
+                        "FromPort": "8091",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "8091"
+                    },
+                    {
+                        "FromPort": "11210",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "11210"
+                    },
+                    {
+                        "FromPort": "11211",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "11211"
+                    },
+                    {
+                        "FromPort": "21100",
+                        "IpProtocol": "tcp",
+                        "SourceSecurityGroupId": {
+                            "Ref": "CouchbaseSecurityGroup"
+                        },
+                        "ToPort": "21299"
                     }
                 ]
             },
