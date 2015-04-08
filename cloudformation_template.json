@@ -1,28 +1,5 @@
 {
     "Description": "An Ec2-classic stack with Couchbase Server, Sync Gateway + load testing tools ",
-    "Outputs": {
-        "InstanceAccess": {
-            "Description": "Command to use to SSH to instance",
-            "Value": {
-                "Fn::Join": [
-                    "",
-                    [
-                        "ssh -i ",
-                        {
-                            "Ref": "KeyName"
-                        },
-                        " ubuntu|ec2-user|root@",
-                        {
-                            "Fn::GetAtt": [
-                                "myinstance",
-                                "PublicDnsName"
-                            ]
-                        }
-                    ]
-                ]
-            }
-        }
-    },
     "Parameters": {
         "KeyName": {
             "Description": "Name of an existing EC2 KeyPair to enable SSH access",
@@ -44,13 +21,64 @@
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
-        "myinstance": {
+        "couchbaseserver0": {
             "Properties": {
-                "ImageId": "ami-951945d0",
-                "InstanceType": "t1.micro",
+                "ImageId": "ami-403b4328",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
                 "SecurityGroups": [
                     {
                         "Ref": "MySecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "couchbaseserver0"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "couchbaseserver1": {
+            "Properties": {
+                "ImageId": "ami-403b4328",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "MySecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "couchbaseserver1"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "couchbaseserver2": {
+            "Properties": {
+                "ImageId": "ami-403b4328",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "MySecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "couchbaseserver2"
                     }
                 ]
             },

@@ -4,7 +4,7 @@
 # cloudformation template by hand.  It also allows for DRY approaches
 # to maintaining cloudformation templates.
 
-from troposphere import Ref, Template, Parameter, Output, Join, GetAtt
+from troposphere import Ref, Template, Parameter, Output, Join, GetAtt, Tags
 import troposphere.ec2 as ec2
 
 
@@ -37,19 +37,16 @@ sg.SecurityGroupIngress = [
 # Add security group to template
 t.add_resource(sg)
 
-# Instances
-instance = ec2.Instance("myinstance")
-instance.ImageId = "ami-951945d0"
-instance.InstanceType = "t1.micro"
-instance.SecurityGroups = [Ref(sg)]
-t.add_resource(instance)
-
-# Add output to template
-t.add_output(Output(
-    "InstanceAccess",
-    Description="Command to use to SSH to instance",
-    Value=Join("", ["ssh -i ", Ref(keyname_param), " ubuntu|ec2-user|root@", GetAtt(instance, "PublicDnsName")])
-))
+# Couchbase Server Instances
+for i in xrange(3):
+    name = "couchbaseserver{}".format(i)
+    instance = ec2.Instance(name)
+    instance.ImageId = "ami-403b4328"
+    instance.InstanceType = "m1.large"
+    instance.SecurityGroups = [Ref(sg)]
+    instance.KeyName = Ref(keyname_param)
+    instance.Tags=Tags(Name=name)
+    t.add_resource(instance)
 
 print(t.to_json())
 
