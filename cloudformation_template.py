@@ -7,7 +7,6 @@
 from troposphere import Ref, Template, Parameter, Output, Join, GetAtt, Tags
 import troposphere.ec2 as ec2
 
-
 t = Template()
 
 t.add_description(
@@ -21,11 +20,15 @@ keyname_param = t.add_parameter(Parameter(
     'KeyName', Type='String',
     Description='Name of an existing EC2 KeyPair to enable SSH access'
 ))
+num_couchbase_servers = t.add_parameter(Parameter(
+    'NumCouchbaseServers', Type='String',
+    Description='How many Couchbase Server instances should be started?'
+))
 
 
 # Create a security group
 sg = ec2.SecurityGroup('CouchbaseSecurityGroup')
-sg.GroupDescription = "Allow access to MyInstance"
+sg.GroupDescription = "Allow access to Couchbase Server"
 sg.SecurityGroupIngress = [
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
@@ -43,37 +46,37 @@ sg.SecurityGroupIngress = [
         IpProtocol="tcp",
         FromPort="4369",
         ToPort="4369",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="5984",
         ToPort="5984",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="8091",
         ToPort="8091",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="11210",
         ToPort="11210",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="11211",
         ToPort="11211",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     ),
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="21100",
         ToPort="21299",
-        SourceSecurityGroupId=Ref(sg),
+        CidrIp="0.0.0.0/0",
     )
 ]
 
