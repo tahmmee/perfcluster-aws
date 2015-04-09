@@ -36,54 +36,31 @@ secGrpCouchbase.SecurityGroupIngress = [
         FromPort="8091",
         ToPort="8091",
         CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="4369",
-        ToPort="4369",
-        CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="5984",
-        ToPort="5984",
-        CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="8091",
-        ToPort="8091",
-        CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="11210",
-        ToPort="11210",
-        CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="11211",
-        ToPort="11211",
-        CidrIp="0.0.0.0/0",
     )
 ]
 
 # Add security group to template
 t.add_resource(secGrpCouchbase)
 
+cbIngressPorts = [
+    {"FromPort": "4369", "ToPort": "4369" },
+    {"FromPort": "5984", "ToPort": "5984" },
+    {"FromPort": "11210", "ToPort": "11210" },
+    {"FromPort": "11211", "ToPort": "11211" },
+    {"FromPort": "21100", "ToPort": "21299" },
+]
 
-
-
-secGrpCbIngress = ec2.SecurityGroupIngress('CouchbaseSecurityGroupIngress')
-secGrpCbIngress.GroupName = Ref(secGrpCouchbase)
-secGrpCbIngress.IpProtocol = "tcp"
-secGrpCbIngress.FromPort = "21100"
-secGrpCbIngress.ToPort = "21299"
-secGrpCbIngress.SourceSecurityGroupName = Ref(secGrpCouchbase)
-
-t.add_resource(secGrpCbIngress)
-
+for cbIngressPort in cbIngressPorts:
+    from_port = cbIngressPort["FromPort"]
+    to_port = cbIngressPort["ToPort"]
+    name = 'CouchbaseSecurityGroupIngress{}'.format(from_port)
+    secGrpCbIngress = ec2.SecurityGroupIngress(name)
+    secGrpCbIngress.GroupName = Ref(secGrpCouchbase)
+    secGrpCbIngress.IpProtocol = "tcp"
+    secGrpCbIngress.FromPort = from_port
+    secGrpCbIngress.ToPort = to_port
+    secGrpCbIngress.SourceSecurityGroupName = Ref(secGrpCouchbase)
+    t.add_resource(secGrpCbIngress)
 
 # Couchbase Server Instances
 for i in xrange(3):
@@ -95,7 +72,6 @@ for i in xrange(3):
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name)
     t.add_resource(instance)
-
 
 
 print(t.to_json())

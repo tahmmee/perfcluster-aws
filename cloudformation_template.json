@@ -16,18 +16,84 @@
                         "FromPort": "22",
                         "IpProtocol": "tcp",
                         "ToPort": "22"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "8091",
+                        "IpProtocol": "tcp",
+                        "ToPort": "8091"
                     }
                 ]
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
-        "CouchbaseSecurityGroupIngress1": {
+        "CouchbaseSecurityGroupIngress11210": {
             "Properties": {
-		"GroupName" : { "Ref" : "CouchbaseSecurityGroup" },
-                "FromPort": "4369",
+                "FromPort": "11210",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
                 "IpProtocol": "tcp",
-                "ToPort": "4369",
-		"SourceSecurityGroupName" : { "Ref" : "CouchbaseSecurityGroup" }
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "11210"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
+        "CouchbaseSecurityGroupIngress11211": {
+            "Properties": {
+                "FromPort": "11211",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "11211"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
+        "CouchbaseSecurityGroupIngress21100": {
+            "Properties": {
+                "FromPort": "21100",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "21299"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
+        "CouchbaseSecurityGroupIngress4369": {
+            "Properties": {
+                "FromPort": "4369",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "4369"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
+        "CouchbaseSecurityGroupIngress5984": {
+            "Properties": {
+                "FromPort": "5984",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "5984"
             },
             "Type": "AWS::EC2::SecurityGroupIngress"
         },
