@@ -22,6 +22,12 @@
                         "FromPort": "8091",
                         "IpProtocol": "tcp",
                         "ToPort": "8091"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "4984",
+                        "IpProtocol": "tcp",
+                        "ToPort": "4984"
                     }
                 ]
             },
@@ -83,6 +89,20 @@
             },
             "Type": "AWS::EC2::SecurityGroupIngress"
         },
+        "CouchbaseSecurityGroupIngress4985": {
+            "Properties": {
+                "FromPort": "4985",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "4985"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
         "CouchbaseSecurityGroupIngress5984": {
             "Properties": {
                 "FromPort": "5984",
@@ -97,6 +117,34 @@
             },
             "Type": "AWS::EC2::SecurityGroupIngress"
         },
+        "CouchbaseSecurityGroupIngress8092": {
+            "Properties": {
+                "FromPort": "8092",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "8092"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
+        "CouchbaseSecurityGroupIngress9876": {
+            "Properties": {
+                "FromPort": "9876",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "9876"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
         "couchbaseserver0": {
             "Properties": {
                 "ImageId": "ami-403b4328",
@@ -106,7 +154,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "CouchbaseSecurityGroup"
+                        "Ref": null
                     }
                 ],
                 "Tags": [
@@ -127,7 +175,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "CouchbaseSecurityGroup"
+                        "Ref": null
                     }
                 ],
                 "Tags": [
@@ -148,13 +196,139 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "CouchbaseSecurityGroup"
+                        "Ref": null
                     }
                 ],
                 "Tags": [
                     {
                         "Key": "Name",
                         "Value": "couchbaseserver2"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload0": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload0"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload1": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload1"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload2": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload2"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway0": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway0"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway1": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway1"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway2": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m1.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": null
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway2"
                     }
                 ]
             },
