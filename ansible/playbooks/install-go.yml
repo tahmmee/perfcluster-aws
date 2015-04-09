@@ -5,3 +5,9 @@
   tasks:
   - name: install wget
     yum: pkg=wget state=latest
+  - name: download golang
+    get_url: url=http://golang.org/dl/go1.4.2.linux-amd64.tar.gz dest=/tmp mode=0440
+  - unarchive: src=/tmp/go1.4.2.linux-amd64.tar.gz dest=/usr/local copy=no
+  - file: src=/usr/local/go/bin/go dest=/usr/local/bin/go owner=centos group=centos state=link
+  - file: src=/usr/local/go/bin/godoc dest=/usr/local/bin/godoc owner=centos group=centos state=link
+  - file: src=/usr/local/go/bin/gofmt dest=/usr/local/bin/gofmt owner=centos group=centos state=link
