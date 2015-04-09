@@ -90,7 +90,7 @@ for i in xrange(NUM_COUCHBASE_SERVERS):
     instance.InstanceType = "m1.large"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
-    instance.Tags=Tags(Name=name)
+    instance.Tags=Tags(Name=name, Type="couchbaseserver")
     t.add_resource(instance)
 
 # Sync Gw instances (ubuntu ami)
@@ -101,7 +101,7 @@ for i in xrange(NUM_SYNC_GW_SERVERS):
     instance.InstanceType = "m3.large"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
-    instance.Tags=Tags(Name=name)
+    instance.Tags=Tags(Name=name, Type="syncgateway")
     t.add_resource(instance)
 
 # Gateload instances (ubuntu ami)
@@ -112,7 +112,7 @@ for i in xrange(NUM_GATELOADS):
     instance.InstanceType = "m3.medium"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
-    instance.Tags=Tags(Name=name)
+    instance.Tags=Tags(Name=name, Type="gateload")
     t.add_resource(instance)
 
 print(t.to_json())

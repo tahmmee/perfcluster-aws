@@ -17,6 +17,7 @@ One time setup:
 
 ```
 $ pip install troposphere
+$ pip install boto
 ```
 
 Generate template after changes to the python file:
