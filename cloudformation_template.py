@@ -69,6 +69,8 @@ def createCouchbaseSecurityGroups(t):
         secGrpCbIngress.SourceSecurityGroupName = Ref(secGrpCouchbase)
         t.add_resource(secGrpCbIngress)
 
+    return secGrpCouchbase
+
 
 #
 # Parameters
@@ -96,7 +98,7 @@ for i in xrange(NUM_SYNC_GW_SERVERS):
     name = "syncgateway{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7 
-    instance.InstanceType = "m1.large"
+    instance.InstanceType = "m3.large"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name)
@@ -107,7 +109,7 @@ for i in xrange(NUM_GATELOADS):
     name = "gateload{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7 
-    instance.InstanceType = "m1.large"
+    instance.InstanceType = "m3.medium"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name)

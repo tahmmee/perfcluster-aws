@@ -154,7 +154,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -175,7 +175,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -196,7 +196,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -211,13 +211,13 @@
         "gateload0": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.medium",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -232,13 +232,13 @@
         "gateload1": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.medium",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -253,13 +253,13 @@
         "gateload2": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.medium",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -274,13 +274,13 @@
         "syncgateway0": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.large",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -295,13 +295,13 @@
         "syncgateway1": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.large",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
@@ -316,13 +316,13 @@
         "syncgateway2": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m1.large",
+                "InstanceType": "m3.large",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": null
+                        "Ref": "CouchbaseSecurityGroup"
                     }
                 ],
                 "Tags": [
