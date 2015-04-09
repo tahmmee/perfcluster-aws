@@ -1,0 +1,15 @@
+---
+- hosts: tag_Type_syncgateway
+  remote_user: centos
+  sudo: true
+  tasks:
+  - name: add sync gateway user
+    user: name=sync_gateway createhome=yes
+  - name: make service install script executable
+    file: path=/home/centos/sync_gateway/service/sync_gateway_service_install.sh mode=a+x
+  - name: copy sync gateway binary to sync_gateway home
+    shell: cp /home/centos/sync_gateway/bin/sync_gateway /home/sync_gateway
+  - name: change permissions of sync gateway executable
+    file: path=/home/sync_gateway/sync_gateway mode=a+x
+  - name: install sync gateway service
+    shell: ./sync_gateway_service_install.sh --sgpath=/home/sync_gateway/sync_gateway chdir=/home/centos/sync_gateway/service
