@@ -20,16 +20,11 @@ keyname_param = t.add_parameter(Parameter(
     'KeyName', Type='String',
     Description='Name of an existing EC2 KeyPair to enable SSH access'
 ))
-num_couchbase_servers = t.add_parameter(Parameter(
-    'NumCouchbaseServers', Type='String',
-    Description='How many Couchbase Server instances should be started?'
-))
-
 
 # Create a security group
-sg = ec2.SecurityGroup('CouchbaseSecurityGroup')
-sg.GroupDescription = "Allow access to Couchbase Server"
-sg.SecurityGroupIngress = [
+secGrpCouchbase = ec2.SecurityGroup('CouchbaseSecurityGroup')
+secGrpCouchbase.GroupDescription = "Allow access to Couchbase Server"
+secGrpCouchbase.SecurityGroupIngress = [
     ec2.SecurityGroupRule(
         IpProtocol="tcp",
         FromPort="22",
@@ -71,17 +66,24 @@ sg.SecurityGroupIngress = [
         FromPort="11211",
         ToPort="11211",
         CidrIp="0.0.0.0/0",
-    ),
-    ec2.SecurityGroupRule(
-        IpProtocol="tcp",
-        FromPort="21100",
-        ToPort="21299",
-        CidrIp="0.0.0.0/0",
     )
 ]
 
 # Add security group to template
-t.add_resource(sg)
+t.add_resource(secGrpCouchbase)
+
+
+
+
+secGrpCbIngress = ec2.SecurityGroupIngress('CouchbaseSecurityGroupIngress')
+secGrpCbIngress.GroupName = Ref(secGrpCouchbase)
+secGrpCbIngress.IpProtocol = "tcp"
+secGrpCbIngress.FromPort = "21100"
+secGrpCbIngress.ToPort = "21299"
+secGrpCbIngress.SourceSecurityGroupName = Ref(secGrpCouchbase)
+
+t.add_resource(secGrpCbIngress)
+
 
 # Couchbase Server Instances
 for i in xrange(3):
@@ -89,10 +91,12 @@ for i in xrange(3):
     instance = ec2.Instance(name)
     instance.ImageId = "ami-403b4328"
     instance.InstanceType = "m1.large"
-    instance.SecurityGroups = [Ref(sg)]
+    instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name)
     t.add_resource(instance)
+
+
 
 print(t.to_json())
 
