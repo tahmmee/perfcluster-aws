@@ -1,0 +1,6 @@
+---
+- hosts: tag_Type_gateload
+  remote_user: centos
+  tasks:
+  - name: start gateload
+    shell: "gateload -workload=gateload_config.json > gateload.out 2>&1" chdir=/home/centos

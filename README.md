@@ -40,6 +40,8 @@ $ python cloudformation_template.py > cloudformation_template.json
     * Cache reader config
 * Manually Ssh into cache writer machine, change config to cache writer == true 
 * `ansible-playbook start-sync-gateway.yml`
-* Hand modify each gateload config to have correct sync gateway ip
+* Hand modify each gateload config:
+    * Have correct sync gateway ip
+    * Have correct UserOffset
 * Kick off gateloads
 

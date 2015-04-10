@@ -1,6 +1,6 @@
 {
     "log": ["HTTP", "HTTP+", "CRUD", "DCache"],
-    "adminInterface": ":4985",
+    "adminInterface": "0.0.0.0:4985",
     "maxIncomingConnections": 0,
     "maxCouchbaseConnections": 16,
     "maxFileDescriptors": 90000,
