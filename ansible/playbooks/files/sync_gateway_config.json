@@ -1,0 +1,24 @@
+{
+    "log": ["HTTP", "HTTP+", "CRUD", "DCache"],
+    "adminInterface": ":4985",
+    "maxIncomingConnections": 0,
+    "maxCouchbaseConnections": 16,
+    "maxFileDescriptors": 90000,
+    "slowServerCallWarningThreshold": 500,
+    "compressResponses": true,
+    "databases": {
+        "db": {
+            "server": "http://10.32.154.199:8091/",
+            "bucket": "bucket-1",
+	        "allow_empty_password": true,
+            "users": {
+                "GUEST": { "disabled": true }
+            },
+	    "remote_cache": {
+		"writer": false,
+		"server": "http://10.32.154.199:8091/",
+		"bucket": "bucket-2"
+	    }
+        }
+    }
+}
