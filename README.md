@@ -38,10 +38,8 @@ $ python cloudformation_template.py > cloudformation_template.json
     * Create buckets: bucket-1 and bucket-2
 * Manually update cache reader configs in github to have couchbase ip 
     * Cache reader config
-* `ansible-playbook get-sync-gateway-configs.yml` # TODO -- will pull from github
 * Manually Ssh into cache writer machine, change config to cache writer == true 
 * `ansible-playbook start-sync-gateway.yml`
-* `ansible-playbook get-gateload-configs.yml`  # TODO
 * Hand modify each gateload config to have correct sync gateway ip
 * Kick off gateloads
 
