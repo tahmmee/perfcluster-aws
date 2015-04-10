@@ -3,6 +3,8 @@
   remote_user: centos
   sudo: true
   tasks:
+  - name: stop any sync gateway services that might be running
+    service: name=sync_gateway state=stopped
   - name: add sync gateway user
     user: name=sync_gateway createhome=yes
   - name: make service install script executable
@@ -13,3 +15,7 @@
     file: path=/home/sync_gateway/sync_gateway mode=a+x
   - name: install sync gateway service
     shell: ./sync_gateway_service_install.sh --sgpath=/home/sync_gateway/sync_gateway chdir=/home/centos/sync_gateway/service
+  - name: download sync gateway config
+    get_url: url=https://raw.githubusercontent.com/tleyden/sync_gateway/master/examples/perf_cluster.json dest=/home/sync_gateway/sync_gateway.json mode=0440 force=true
+  - name: change owner of sync gateway config
+    file: path=/home/sync_gateway/sync_gateway.json owner=sync_gateway group=sync_gateway

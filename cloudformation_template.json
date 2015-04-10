@@ -33,6 +33,20 @@
             },
             "Type": "AWS::EC2::SecurityGroup"
         },
+        "CouchbaseSecurityGroupIngress11209": {
+            "Properties": {
+                "FromPort": "11209",
+                "GroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "SourceSecurityGroupName": {
+                    "Ref": "CouchbaseSecurityGroup"
+                },
+                "ToPort": "11209"
+            },
+            "Type": "AWS::EC2::SecurityGroupIngress"
+        },
         "CouchbaseSecurityGroupIngress11210": {
             "Properties": {
                 "FromPort": "11210",
@@ -161,6 +175,10 @@
                     {
                         "Key": "Name",
                         "Value": "couchbaseserver0"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "couchbaseserver"
                     }
                 ]
             },
@@ -182,6 +200,10 @@
                     {
                         "Key": "Name",
                         "Value": "couchbaseserver1"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "couchbaseserver"
                     }
                 ]
             },
@@ -203,6 +225,10 @@
                     {
                         "Key": "Name",
                         "Value": "couchbaseserver2"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "couchbaseserver"
                     }
                 ]
             },
@@ -224,6 +250,10 @@
                     {
                         "Key": "Name",
                         "Value": "gateload0"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
                     }
                 ]
             },
@@ -245,6 +275,10 @@
                     {
                         "Key": "Name",
                         "Value": "gateload1"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
                     }
                 ]
             },
@@ -266,6 +300,10 @@
                     {
                         "Key": "Name",
                         "Value": "gateload2"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
                     }
                 ]
             },
@@ -287,6 +325,10 @@
                     {
                         "Key": "Name",
                         "Value": "syncgateway0"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
                     }
                 ]
             },
@@ -308,6 +350,10 @@
                     {
                         "Key": "Name",
                         "Value": "syncgateway1"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
                     }
                 ]
             },
@@ -329,6 +375,10 @@
                     {
                         "Key": "Name",
                         "Value": "syncgateway2"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
                     }
                 ]
             },
