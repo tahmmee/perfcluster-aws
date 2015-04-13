@@ -77,7 +77,7 @@ The same can be done for Sync Gateways and Gateload instances.  Here are the ful
 * tag_Type_syncgateway
 * tag_Type_gateload
 
-## Automating service discovery
+## Automating Gateload config creation
 
 ** Gateload <-> Sync Gateway mapping **
 

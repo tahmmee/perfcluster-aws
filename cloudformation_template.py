@@ -35,10 +35,16 @@ def createCouchbaseSecurityGroups(t):
             ToPort="8091",
             CidrIp="0.0.0.0/0",
         ),
-        ec2.SecurityGroupRule(
+        ec2.SecurityGroupRule(   # sync gw
             IpProtocol="tcp",
             FromPort="4984",
             ToPort="4984",
+            CidrIp="0.0.0.0/0",
+        ),
+        ec2.SecurityGroupRule(   # expvars
+            IpProtocol="tcp",
+            FromPort="9876",
+            ToPort="9876",
             CidrIp="0.0.0.0/0",
         )
     ]
@@ -49,7 +55,6 @@ def createCouchbaseSecurityGroups(t):
     cbIngressPorts = [
         {"FromPort": "4369", "ToPort": "4369" },    # couchbase server
         {"FromPort": "4985", "ToPort": "4985" },    # sync gw admin 
-        {"FromPort": "9876", "ToPort": "9876" },    # gateload
         {"FromPort": "5984", "ToPort": "5984" },    # couchbase server
         {"FromPort": "8092", "ToPort": "8092" },    # couchbase server
         {"FromPort": "11209", "ToPort": "11209" },  # couchbase server 
