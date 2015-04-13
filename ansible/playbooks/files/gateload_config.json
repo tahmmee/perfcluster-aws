@@ -1,5 +1,5 @@
 {
-    "Hostname": "fixme",
+    "Hostname": "{{ sync_gateway_private_ip }}",
     "Port": 4984,
     "AdminPort": 4985,
     "Database": "db",
@@ -33,7 +33,7 @@
     "MaxUserOffTimeMs": 0,
     "Verbose": false,
     "LogRequests": false,
-    "UserOffset": 0,
+    "UserOffset": {{ user_offset }},
     "AuthType": "basic",
     "Password": ""
 }
