@@ -46,11 +46,11 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook build-gateload.yml`  
 * `ansible-playbook install-sync-gateway-service.yml`
 * Manually setup Couchbase Server
-    * Choose any of the couchbase servers
+    * Find public ip of couchbaseserver0
     * Login with Administrator / <instance_id> (eg, i-8d572871)
     * Join all couchbase server nodes into cluster
         * Choose Add Server
-	* Add the **private ip** of the other couchbase servers, and for the password field, use the instance_id of the server being added
+	* Add the **private ip** of couchbaseserver1 and couchbaseserver2, and for the password field, use the instance_id of the server being added
     * Rebalance
     * Create buckets: bucket-1 and bucket-2.  Use 50% RAM for each.
 * Manually SSH into cache writer machine (find the ip via `ansible tag_CacheType_writer --list-hosts`), change config to cache writer == true 
@@ -59,10 +59,10 @@ $ python cloudformation_template.py > cloudformation_template.json
     * vi ~/sync_gateway.json
     * Edit file to set cache writer equal to true
 * `ansible-playbook start-sync-gateway.yml`
-* Hand modify each gateload config:
-    * Have correct sync gateway ip
-    * Have correct UserOffset
-* Manually ssh into respective gateload machines and kick off gateloads
+* `python generate_gateload_configs.py` This generates and upload the gateload configs with:
+    * Each gateload points to a unique sync gateway ip (cache readers only)
+    * Each gateload has the correct user offset so users don't overlap
+* Run gateload on all gateload machines with: `ansible tag_Type_gateload -v -a "gateload -workload=gateload_config.json" --user centos`  (NOTE: not sure how to capture the gateload output)
 
 ## Viewing instances by type
 
