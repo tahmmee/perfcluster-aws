@@ -14,8 +14,8 @@ t.add_description(
 )
 
 NUM_COUCHBASE_SERVERS=3
-NUM_SYNC_GW_SERVERS=3
-NUM_GATELOADS=3
+NUM_SYNC_GW_SERVERS=10
+NUM_GATELOADS=9
 
 def createCouchbaseSecurityGroups(t):
 

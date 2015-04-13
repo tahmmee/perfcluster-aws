@@ -309,6 +309,156 @@
             },
             "Type": "AWS::EC2::Instance"
         },
+        "gateload3": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload3"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload4": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload4"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload5": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload5"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload6": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload6"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload7": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload7"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "gateload8": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.medium",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "gateload8"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "gateload"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
         "syncgateway0": {
             "Properties": {
                 "ImageId": "ami-96a818fe",
@@ -375,6 +525,181 @@
                     {
                         "Key": "Name",
                         "Value": "syncgateway2"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway3": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway3"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway4": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway4"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway5": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway5"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway6": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway6"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway7": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway7"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway8": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway8"
+                    },
+                    {
+                        "Key": "Type",
+                        "Value": "syncgateway"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::Instance"
+        },
+        "syncgateway9": {
+            "Properties": {
+                "ImageId": "ami-96a818fe",
+                "InstanceType": "m3.large",
+                "KeyName": {
+                    "Ref": "KeyName"
+                },
+                "SecurityGroups": [
+                    {
+                        "Ref": "CouchbaseSecurityGroup"
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "syncgateway9"
                     },
                     {
                         "Key": "Type",
