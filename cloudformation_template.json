@@ -28,6 +28,12 @@
                         "FromPort": "4984",
                         "IpProtocol": "tcp",
                         "ToPort": "4984"
+                    },
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "9876",
+                        "IpProtocol": "tcp",
+                        "ToPort": "9876"
                     }
                 ]
             },
@@ -142,20 +148,6 @@
                     "Ref": "CouchbaseSecurityGroup"
                 },
                 "ToPort": "8092"
-            },
-            "Type": "AWS::EC2::SecurityGroupIngress"
-        },
-        "CouchbaseSecurityGroupIngress9876": {
-            "Properties": {
-                "FromPort": "9876",
-                "GroupName": {
-                    "Ref": "CouchbaseSecurityGroup"
-                },
-                "IpProtocol": "tcp",
-                "SourceSecurityGroupName": {
-                    "Ref": "CouchbaseSecurityGroup"
-                },
-                "ToPort": "9876"
             },
             "Type": "AWS::EC2::SecurityGroupIngress"
         },

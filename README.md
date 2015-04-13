@@ -57,11 +57,12 @@ $ python cloudformation_template.py > cloudformation_template.json
     * ssh centos@<ip>
     * sudo bash && su - sync_gateway
     * vi ~/sync_gateway.json
+    * Edit file to set cache writer equal to true
 * `ansible-playbook start-sync-gateway.yml`
 * Hand modify each gateload config:
     * Have correct sync gateway ip
     * Have correct UserOffset
-* Kick off gateloads
+* Manually ssh into respective gateload machines and kick off gateloads
 
 ## Viewing instances by type
 
@@ -81,8 +82,8 @@ The same can be done for Sync Gateways and Gateload instances.  Here are the ful
 
 ** Gateload <-> Sync Gateway mapping **
 
-* Find a list of ip's of all the sync gateway machines
-* Fina the ip of the writer and remove from the list (`ansible tag_CacheType_writer --list-hosts`)
+* Find a list of ip's of all the sync gateway machines (`ansible tag_Type_syncgateway --list-hosts`)
+* Find the ip of the writer and remove from the list (`ansible tag_CacheType_writer --list-hosts`)
 * Find a list of ip's of all the gateload machines
 * Assert that list_sync_gateways and list_gateloads are of the same length
 * Assign each gateload a sync gateway
