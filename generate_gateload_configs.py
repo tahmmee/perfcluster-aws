@@ -85,43 +85,51 @@ def render_gateload_template(sync_gateway_private_ip, user_offset):
         )
         return rendered 
 
+def upload_gateload_config(gateload_ec2_id, sync_gateway_private_ip, user_offset):
+    
+    rendered = render_gateload_template(
+        sync_gateway_private_ip,
+        user_offset
+    )
+    print rendered
+
+    outfile = os.path.join("/tmp", gateload_ec2_id) 
+    with open(outfile, 'w') as f:
+        f.write(rendered)
+    print "Wrote to file: {}".format(outfile)
+
+    # transfer file to remote host
+    cmd = 'ansible {} -m copy -a "src={} dest=/home/centos/gateload_config.json" --user centos'.format(gateload_ec2_id, outfile)
+    result = subprocess.check_output(cmd, shell=True)
+    print "File transfer result: {}".format(result)
+
+
 def main():
 
     os.chdir("ansible/playbooks")
-    sync_gateway_ips = sync_gateways()
-    print sync_gateway_ips
-    gateload_dicts = gateloads()
 
+    sync_gateway_ips = sync_gateways()
+
+    gateload_dicts = gateloads()
     
     for idx, gateload_dict in enumerate(gateload_dicts):
-
+        
         # calculate the user offset 
         user_offset = idx * 13000 
 
+        # assign a sync gateway to this gateload, get its ip 
         sync_gateway_private_ip = sync_gateway_ips[idx]
-        
-        rendered = render_gateload_template(
+
+        gateload_ec2_id = gateload_dict["ec2_id"]
+
+        upload_gateload_config(
+            gateload_ec2_id,
             sync_gateway_private_ip,
             user_offset
         )
-        print rendered
-        
-        gateload_ec2_id = gateload_dict["ec2_id"]
 
-        outfile = os.path.join("/tmp", gateload_ec2_id) 
-        with open(outfile, 'w') as f:
-            f.write(rendered)
-        print "Wrote to file: {}".format(outfile)
-
-        # transfer file to remote host
-        cmd = 'ansible {} -m copy -a "src={} dest=/home/centos/gateload_config.json" --user centos'.format(gateload_ec2_id, outfile)
-        result = subprocess.check_output(cmd, shell=True)
-        print "File transfer result: {}".format(result)
-        
-    
-
+    print "Finished successfully"
 
 if __name__ == "__main__":
     main()
-    # os.chdir("ansible/playbooks")
-    # render_gateload_template("1.1.1.1", "20")
+
