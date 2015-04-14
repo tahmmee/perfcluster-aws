@@ -9,6 +9,6 @@
          dest=/home/centos/sync_gateway
          recursive=true
   - name: checkout feature branch
-    shell: git checkout feature/distributed_cache chdir=/home/centos/sync_gateway
+    shell: git checkout feature/distributed_cache_stale_ok chdir=/home/centos/sync_gateway
   - name: build sync gateway
     shell: ./build.sh chdir=/home/centos/sync_gateway

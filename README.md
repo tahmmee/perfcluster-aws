@@ -62,7 +62,7 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `python generate_gateload_configs.py` This generates and upload the gateload configs with:
     * Each gateload points to a unique sync gateway ip (cache readers only)
     * Each gateload has the correct user offset so users don't overlap
-* Run gateload on all gateload machines with: `ansible tag_Type_gateload -v -a "gateload -workload=gateload_config.json" --user centos`  (NOTE: not sure how to capture the gateload output)
+* Run gateload on all gateload machines with: `ansible tag_IsTest_true -v -a "nohup gateload -workload=gateload_config.json &" --user centos` followed by Ctl-c  (NOTE: not sure how to capture the gateload output)
 
 ## Viewing instances by type
 
@@ -78,18 +78,3 @@ The same can be done for Sync Gateways and Gateload instances.  Here are the ful
 * tag_Type_syncgateway
 * tag_Type_gateload
 
-## Automating Gateload config creation
-
-** Gateload <-> Sync Gateway mapping **
-
-* Find a list of ip's of all the sync gateway machines (`ansible tag_Type_syncgateway --list-hosts`)
-* Find the ip of the writer and remove from the list (`ansible tag_CacheType_writer --list-hosts`)
-* Find a list of ip's of all the gateload machines
-* Assert that list_sync_gateways and list_gateloads are of the same length
-* Assign each gateload a sync gateway
-* Assign each gateload a user offset (iterate over gateloads and bump by 13K)
-* For each gateload
-  * Generate gateload config from a template
-    * Use assigned Sync Gateway ip
-    * Use assigned user offset
-  * Upload gateload config to gateload machine
