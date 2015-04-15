@@ -107,7 +107,14 @@ for i in xrange(NUM_SYNC_GW_SERVERS):
     instance.InstanceType = "m3.large"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
-    instance.Tags=Tags(Name=name, Type="syncgateway")
+
+    # Make syncgateway0 a cache writer, and the rest cache readers
+    # See https://github.com/couchbase/sync_gateway/wiki/Distributed-channel-cache-design-notes
+    if i == 0:
+        instance.Tags=Tags(Name=name, Type="syncgateway", CacheType="writer")
+    else:
+        instance.Tags=Tags(Name=name, Type="syncgateway")
+
     t.add_resource(instance)
 
 # Gateload instances (ubuntu ami)

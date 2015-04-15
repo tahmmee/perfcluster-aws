@@ -1,0 +1,11 @@
+---
+- hosts: tag_CacheType_writer
+  remote_user: centos
+  sudo: true
+  vars:
+    writer: "true"
+  tasks:
+  - name: copy sync gateway config to host
+    template: src=files/sync_gateway_config.json dest=/home/sync_gateway/sync_gateway.json owner=sync_gateway group=sync_gateway mode=0644 force=true
+  - name: restart sync gateway service
+    service: name=sync_gateway state=restarted

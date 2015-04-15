@@ -15,7 +15,7 @@
                 "GUEST": { "disabled": true }
             },
 	    "remote_cache": {
-		"writer": false,
+		"writer": {{ writer }},
 		"server": "http://10.235.54.82:8091/",
 		"bucket": "bucket-2"
 	    }
