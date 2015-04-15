@@ -53,16 +53,20 @@ $ python cloudformation_template.py > cloudformation_template.json
 	* Add the **private ip** of couchbaseserver1 and couchbaseserver2, and for the password field, use the instance_id of the server being added
     * Rebalance
     * Create buckets: bucket-1 and bucket-2.  Use 50% RAM for each.
-* Manually SSH into cache writer machine (find the ip via `ansible tag_CacheType_writer --list-hosts`), change config to cache writer == true 
+* IMPORTANT: Manually SSH into cache writer machine (find the ip via `ansible tag_CacheType_writer --list-hosts`), change config to cache writer == true.  Will need to be done every time sync gateway is redeployed.
     * ssh centos@<ip>
     * sudo bash && su - sync_gateway
     * vi ~/sync_gateway.json
     * Edit file to set cache writer equal to true
-* `ansible-playbook start-sync-gateway.yml`
+* `ansible-playbook restart-sync-gateway.yml`
 * `python generate_gateload_configs.py` This generates and upload the gateload configs with:
     * Each gateload points to a unique sync gateway ip (cache readers only)
     * Each gateload has the correct user offset so users don't overlap
-* Run gateload on all gateload machines with: `ansible tag_IsTest_true -v -a "nohup gateload -workload=gateload_config.json &" --user centos` followed by Ctl-c  (NOTE: not sure how to capture the gateload output)
+* Run gateload on all gateload machines via:
+    * ssh in
+    * `screen -S gateload`
+    * `gateload -workload=gateload_config.json`
+* Kick off script to collect expvar output (see below)
 
 ## Viewing instances by type
 
@@ -78,3 +82,15 @@ The same can be done for Sync Gateways and Gateload instances.  Here are the ful
 * tag_Type_syncgateway
 * tag_Type_gateload
 
+
+## Collecting expvar output
+
+```
+while [ 1 ]
+do
+    outfile=$(date +%s)
+    curl localhost:9876/debug/vars -o ${outfile}.json
+    echo "Saved output to $outfile"
+    sleep 60
+done
+```

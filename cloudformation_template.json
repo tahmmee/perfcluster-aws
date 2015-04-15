@@ -154,7 +154,7 @@
         "couchbaseserver0": {
             "Properties": {
                 "ImageId": "ami-403b4328",
-                "InstanceType": "m1.large",
+                "InstanceType": "c1.xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -179,7 +179,7 @@
         "couchbaseserver1": {
             "Properties": {
                 "ImageId": "ami-403b4328",
-                "InstanceType": "m1.large",
+                "InstanceType": "c1.xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -204,7 +204,7 @@
         "couchbaseserver2": {
             "Properties": {
                 "ImageId": "ami-403b4328",
-                "InstanceType": "m1.large",
+                "InstanceType": "c1.xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },

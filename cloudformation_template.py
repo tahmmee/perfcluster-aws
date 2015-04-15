@@ -93,7 +93,7 @@ for i in xrange(NUM_COUCHBASE_SERVERS):
     name = "couchbaseserver{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-403b4328"
-    instance.InstanceType = "m1.large"
+    instance.InstanceType = "c1.xlarge"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="couchbaseserver")
