@@ -7,13 +7,9 @@ Automation to setup a performance test cluster on AWS with:
 
 Uses a Cloudformation template to spin up all instances.
 
-## How to generate CloudFormation template
+## Install pre-requisites
 
-This uses [troposphere](https://github.com/cloudtools/troposphere) to generate the Cloudformation template (a json file).
-
-The Cloudformation config is declared via a Python DSL, which then generates the Cloudformation Json.
-
-One time setup:
+**Python Dependencies**
 
 ```
 $ pip install ansible
@@ -21,6 +17,21 @@ $ pip install boto
 $ pip install troposphere
 $ pip install boto
 ```
+
+** Add boto configuration **
+
+```
+$ cat >> ~/.boto
+[Credentials]
+aws_access_key_id = $YOUR_AWS_KEY
+aws_secret_access_key = $YOUR_AWS_SECRET_KEY
+```
+
+## How to generate CloudFormation template
+
+This uses [troposphere](https://github.com/cloudtools/troposphere) to generate the Cloudformation template (a json file).
+
+The Cloudformation config is declared via a Python DSL, which then generates the Cloudformation Json.
 
 Generate template after changes to the python file:
 
