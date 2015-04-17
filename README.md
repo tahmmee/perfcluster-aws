@@ -18,7 +18,7 @@ $ pip install troposphere
 $ pip install boto
 ```
 
-** Add boto configuration **
+**Add boto configuration**
 
 ```
 $ cat >> ~/.boto
