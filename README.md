@@ -60,7 +60,9 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook install-sync-gateway-service.yml`
 * Manually setup Couchbase Server
     * Find public ip of couchbaseserver0
-    * Login with Administrator / <instance_id> (eg, i-8d572871)
+    * Login with:
+        * usename: Administrator
+        * password: \<couchbaseserver0 AWS instance_id\> (eg, i-8d572871)
     * Join all couchbase server nodes into cluster
         * Choose Add Server
 	* Add the **private ip** of couchbaseserver1 and couchbaseserver2, and for the password field, use the instance_id of the server being added
