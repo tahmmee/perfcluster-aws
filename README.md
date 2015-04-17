@@ -50,7 +50,7 @@ $ python cloudformation_template.py > cloudformation_template.json
 
 ### Provision EC2 instances
 
-* Find the internal ip of one of the couchcbase server instances via the AWS web UI
+* Find the private ip of one of the couchcbase server instances via the AWS web UI
 * Open `/ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
 * `ansible-playbook install-go.yml` 
 * `ansible-playbook build-sync-gateway.yml`
