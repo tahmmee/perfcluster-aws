@@ -16,7 +16,7 @@ The Cloudformation config is declared via a Python DSL, which then generates the
 One time setup:
 
 ```
-$ sudo easy_install pip
+$ pip install ansible
 $ pip install troposphere
 $ pip install boto
 ```
