@@ -17,6 +17,7 @@ One time setup:
 
 ```
 $ pip install ansible
+$ pip install boto
 $ pip install troposphere
 $ pip install boto
 ```
