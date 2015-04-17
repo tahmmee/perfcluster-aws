@@ -105,9 +105,9 @@ done
 
 ## Addional Notes
 
-If you need to deploy multiple perf runner clusters into the same AWS account, by default the ansible playbooks will seee all the hosts. You can partition the hosts by passing a SUBSET parameter on the command line.
+If you need to deploy multiple perf runner clusters into the same AWS account, by default the ansible playbooks will process the hosts across all the clusters. You can partition the hosts by passing a SUBSET parameter on the command line.
 
-For example if you have provisioned each cluster using a different IAM use account, you can partition the hosts by the IAM user key pair name e.g. If a users key pair name is 'my_keypair' then the following command will subset the host groups to only those provisioned by that user.
+For example if you have provisioned each cluster using a different IAM use account, you could partition the hosts by the IAM user key pair name e.g. If a users key pair name is 'my_keypair' then the following command will partition the host groups to only those provisioned by that user.
 
 ```
 $ ansible-playbook -l key_tleyden hello-world.yml
