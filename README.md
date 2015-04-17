@@ -25,6 +25,7 @@ $ cat >> ~/.boto
 [Credentials]
 aws_access_key_id = $YOUR_AWS_KEY
 aws_secret_access_key = $YOUR_AWS_SECRET_KEY
+^D
 ```
 
 ## How to generate CloudFormation template
