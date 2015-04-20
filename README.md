@@ -7,18 +7,32 @@ Automation to setup a performance test cluster on AWS with:
 
 Uses a Cloudformation template to spin up all instances.
 
+## Install pre-requisites
+
+**Python Dependencies**
+
+```
+$ pip install ansible
+$ pip install boto
+$ pip install troposphere
+$ pip install boto
+```
+
+**Add boto configuration**
+
+```
+$ cat >> ~/.boto
+[Credentials]
+aws_access_key_id = $YOUR_AWS_KEY
+aws_secret_access_key = $YOUR_AWS_SECRET_KEY
+^D
+```
+
 ## How to generate CloudFormation template
 
 This uses [troposphere](https://github.com/cloudtools/troposphere) to generate the Cloudformation template (a json file).
 
 The Cloudformation config is declared via a Python DSL, which then generates the Cloudformation Json.
-
-One time setup:
-
-```
-$ pip install troposphere
-$ pip install boto
-```
 
 Generate template after changes to the python file:
 
@@ -36,15 +50,19 @@ $ python cloudformation_template.py > cloudformation_template.json
 
 ### Provision EC2 instances
 
-* Find the internal ip of one of the couchcbase server instances via the AWS web UI
+* Find the private ip of one of the couchcbase server instances via the AWS web UI
 * Open `/ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
+* export AWS_ACCESS_KEY_ID="CDABGHEFCDABGHEFCDAB"
+* export AWS_SECRET_ACCESS_KEY=ABGHEFCDABGHEFCDABGHEFCDABGHEFCDABGHEFCDAB
 * `ansible-playbook install-go.yml` 
 * `ansible-playbook build-sync-gateway.yml`
 * `ansible-playbook build-gateload.yml`  
 * `ansible-playbook install-sync-gateway-service.yml`
 * Manually setup Couchbase Server
     * Find public ip of couchbaseserver0
-    * Login with Administrator / <instance_id> (eg, i-8d572871)
+    * Login with:
+        * usename: Administrator
+        * password: \<couchbaseserver0 AWS instance_id\> (eg, i-8d572871)
     * Join all couchbase server nodes into cluster
         * Choose Add Server
 	* Add the **private ip** of couchbaseserver1 and couchbaseserver2, and for the password field, use the instance_id of the server being added
@@ -83,4 +101,14 @@ do
     echo "Saved output to $outfile"
     sleep 60
 done
+```
+
+## Addional Notes
+
+If you need to deploy multiple perf runner clusters into the same AWS account, by default the ansible playbooks will process the hosts across all the clusters. You can partition the hosts by passing a SUBSET parameter on the command line.
+
+For example if you have provisioned each cluster using a different IAM use account, you could partition the hosts by the IAM user key pair name e.g. If a users key pair name is 'my_keypair' then the following command will partition the host groups to only those provisioned by that user.
+
+```
+$ ansible-playbook -l key_tleyden hello-world.yml
 ```
