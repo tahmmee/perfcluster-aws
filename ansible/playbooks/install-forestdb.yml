@@ -1,0 +1,21 @@
+---
+- hosts: tag_Type_syncgateway
+  remote_user: centos
+  sudo: true
+  tasks:
+  - name: install development tools
+    shell: yum groupinstall -y 'Development Tools'
+  - name: install snappy
+    yum: pkg=snappy-devel state=latest 
+  - name: install cmake
+    yum: pkg=cmake state=latest 
+  - name: checkout forestdb
+    git: repo=https://github.com/couchbase/forestdb.git
+         dest=/home/centos/forestdb
+         recursive=true
+  - name: create forestdb build directory
+    file: path=/home/centos/forestdb/build state=directory	
+  - name: forestdb cmake
+    shell: cmake ../ && make all && make install chdir=/home/centos/forestdb/build
+  - name: symlink the forestdb library into /lib64 dir
+    file: src=/usr/local/lib/libforestdb.so dest=/lib64/libforestdb.so state=link
