@@ -18,14 +18,25 @@ $ pip install troposphere
 $ pip install boto
 ```
 
+**Note: the full list of required packages and versions are listed in requirements.txt**
+
 **Add boto configuration**
 
 ```
 $ cat >> ~/.boto
 [Credentials]
-aws_access_key_id = $YOUR_AWS_KEY
-aws_secret_access_key = $YOUR_AWS_SECRET_KEY
+aws_access_key_id = CDABGHEFCDABGHEFCDAB
+aws_secret_access_key = ABGHEFCDABGHEFCDABGHEFCDABGHEFCDABGHEFCDAB
 ^D
+```
+
+(and replace fake credentials above with your real credentials)
+
+**Add AWS env variables**
+
+```
+$ export AWS_ACCESS_KEY_ID="CDABGHEFCDABGHEFCDAB"
+$ export AWS_SECRET_ACCESS_KEY=ABGHEFCDABGHEFCDABGHEFCDABGHEFCDABGHEFCDAB
 ```
 
 ## How to generate CloudFormation template
@@ -52,8 +63,6 @@ $ python cloudformation_template.py > cloudformation_template.json
 
 * Find the private ip of one of the couchcbase server instances via the AWS web UI
 * Open `/ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
-* export AWS_ACCESS_KEY_ID="CDABGHEFCDABGHEFCDAB"
-* export AWS_SECRET_ACCESS_KEY=ABGHEFCDABGHEFCDABGHEFCDABGHEFCDABGHEFCDAB
 * `ansible-playbook install-go.yml` 
 * `ansible-playbook build-sync-gateway.yml`
 * `ansible-playbook build-gateload.yml`  
