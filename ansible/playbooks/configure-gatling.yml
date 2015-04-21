@@ -6,6 +6,8 @@
     group_by: key=key_{{ ec2_key_name }}
 
 - hosts: tag_Type_gateload
+  vars:
+    ec2keyname: andy_mac
   remote_user: centos
   sudo: yes
 
@@ -33,7 +35,7 @@
     action: command update-alternatives --install /usr/bin/mvn mvn /opt/maven/bin/mvn 1
 
   - name: Checkout sg-gatling load project from github
-    git: repo=https://github.com/couchbaselabs/sg-gatling-load.git dest=/home/projects/sg-gatling-load
+    git: repo=https://github.com/couchbaselabs/sg-gatling-load.git dest=/home/projects/sg-gatling-load force=yes
 
   - name: Remove somelog.txt before running theme
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
@@ -42,6 +44,6 @@
     lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.baseURL>(.*)</simulation.baseURL>' line='<simulation.baseURL>{{ item.1 }}</simulation.baseURL>' backrefs=yes
     when: inventory_hostname == item.0
     with_together:
-      - groups.tag_Type_gateload | intersect(groups.key_andy_mac)
-      - groups.tag_Type_syncgateway | intersect(groups.key_andy_mac)
+      - groups.tag_Type_gateload | intersect(groups.key_{{ ec2keyname }})
+      - groups.tag_Type_syncgateway | intersect(groups.key_{{ ec2keyname }})
 
