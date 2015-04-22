@@ -14,8 +14,8 @@ t.add_description(
 )
 
 NUM_COUCHBASE_SERVERS=3
-NUM_SYNC_GW_SERVERS=10
-NUM_GATELOADS=9
+NUM_SYNC_GW_SERVERS=3
+NUM_GATELOADS=2
 
 def createCouchbaseSecurityGroups(t):
 
@@ -35,10 +35,16 @@ def createCouchbaseSecurityGroups(t):
             ToPort="8091",
             CidrIp="0.0.0.0/0",
         ),
-        ec2.SecurityGroupRule(   # sync gw
+        ec2.SecurityGroupRule(   # sync gw user port
             IpProtocol="tcp",
             FromPort="4984",
             ToPort="4984",
+            CidrIp="0.0.0.0/0",
+        ),
+        ec2.SecurityGroupRule(   # sync gw admin port
+            IpProtocol="tcp",
+            FromPort="4985",
+            ToPort="4985",
             CidrIp="0.0.0.0/0",
         ),
         ec2.SecurityGroupRule(   # expvars
@@ -54,7 +60,6 @@ def createCouchbaseSecurityGroups(t):
 
     cbIngressPorts = [
         {"FromPort": "4369", "ToPort": "4369" },    # couchbase server
-        {"FromPort": "4985", "ToPort": "4985" },    # sync gw admin 
         {"FromPort": "5984", "ToPort": "5984" },    # couchbase server
         {"FromPort": "8092", "ToPort": "8092" },    # couchbase server
         {"FromPort": "11209", "ToPort": "11209" },  # couchbase server 
@@ -92,11 +97,22 @@ secGrpCouchbase = createCouchbaseSecurityGroups(t)
 for i in xrange(NUM_COUCHBASE_SERVERS):
     name = "couchbaseserver{}".format(i)
     instance = ec2.Instance(name)
-    instance.ImageId = "ami-403b4328"
-    instance.InstanceType = "c1.xlarge"
+    instance.ImageId = "ami-96a818fe"  # centos7
+    instance.InstanceType = "c3.xlarge"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="couchbaseserver")
+
+    instance.BlockDeviceMappings = [
+        ec2.BlockDeviceMapping(
+            DeviceName = "/dev/xvda",
+            Ebs = ec2.EBSBlockDevice(
+                DeleteOnTermination = True,
+                VolumeSize = 60,
+                VolumeType = "gp2"
+            )
+        )
+    ]
     t.add_resource(instance)
 
 # Sync Gw instances (ubuntu ami)
