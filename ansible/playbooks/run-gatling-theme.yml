@@ -11,7 +11,7 @@
     sudo: no
 
   - name: Run sg-gatling-load theme
-    shell: mvn test -e -P default -Dusers=10 -Dramp=100 > somelog.txt
+    shell: mvn test -e -P gateload-users -DnumPullers=0 -DnumPushers=7500 -DrampUpIntervalMs=600000 > somelog.txt
     args:
       chdir: /home/projects/sg-gatling-load/
 
@@ -21,4 +21,3 @@
 
   - name: Pull simulation.log for run
     fetch: src={{ results_dir.stdout }}/simulation.log dest=/tmp/sg-gatling-load/ fail-on-missing=yes
-    
