@@ -66,6 +66,7 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook install-go.yml`
 * `ansible-playbook install-couchbase-server.yml` 
 * `ansible-playbook build-sync-gateway.yml`
+    * To use a different branch: `ansible-playbook build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"`
 * `ansible-playbook build-gateload.yml`  
 * Manually setup Couchbase Server
     * For each couchbase server in AWS console
