@@ -41,7 +41,7 @@
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
 
   - name: Set sg-gatling-load baseURL for all themes
-    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.baseURL>(.*)</simulation.baseURL>' line='<simulation.baseURL>{{ item.1 }}</simulation.baseURL>' backrefs=yes
+    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHost>(.*)</simulation.targetHost>' line='<simulation.targetHost>{{ item.1 }}</simulation.targetHost>' backrefs=yes
     when: inventory_hostname == item.0
     with_together:
       - groups.tag_Type_gateload | intersect(groups.key_{{ ec2keyname }})
