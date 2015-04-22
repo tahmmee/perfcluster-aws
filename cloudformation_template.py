@@ -105,7 +105,7 @@ for i in xrange(NUM_COUCHBASE_SERVERS):
 
     instance.BlockDeviceMappings = [
         ec2.BlockDeviceMapping(
-            DeviceName = "/dev/xvda",
+            DeviceName = "/dev/sda1",
             Ebs = ec2.EBSBlockDevice(
                 DeleteOnTermination = True,
                 VolumeSize = 60,
