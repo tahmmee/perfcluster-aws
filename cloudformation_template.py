@@ -152,7 +152,7 @@ for i in xrange(NUM_GATELOADS):
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="gateload")
-        instance.BlockDeviceMappings = [
+    instance.BlockDeviceMappings = [
         ec2.BlockDeviceMapping(
             DeviceName = "/dev/sda1",
             Ebs = ec2.EBSBlockDevice(
