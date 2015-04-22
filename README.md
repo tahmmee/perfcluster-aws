@@ -69,15 +69,14 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook build-gateload.yml`  
 * `ansible-playbook install-sync-gateway-service.yml`
 * Manually setup Couchbase Server
-    * Find public ip of couchbaseserver0
-    * Login with:
-        * usename: Administrator
-        * password: \<couchbaseserver0 AWS instance_id\> (eg, i-8d572871)
-    * Join all couchbase server nodes into cluster
-        * Choose Add Server
-	* Add the **private ip** of couchbaseserver1 and couchbaseserver2, and for the password field, use the instance_id of the server being added
+    * For each couchbase server in AWS console
+        * Find public ip and connect via browser 
+        * Go through Setup Wizard
+        * For Configure Server Hostname / Hostname, use the private IP of the instance
+	* Create a small default bucket of 128 MB of RAM
+	* If it's the first one, start a new cluster.  Otherwise, join an existing cluster via private ip.
     * Rebalance
-    * Create buckets: bucket-1 and bucket-2.  Use 50% RAM for each.
+    * Create buckets: bucket-1 and bucket-2.  Use 75% RAM for bucket-1, and remaining RAM for bucket-2.
 * `ansible-playbook configure-sync-gateway-writer.yml`
 * `cd ../.. && python generate_gateload_configs.py` 
 * Run gateload on all gateload machines via:
