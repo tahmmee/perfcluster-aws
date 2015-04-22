@@ -67,7 +67,6 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook install-couchbase-server.yml` 
 * `ansible-playbook build-sync-gateway.yml`
 * `ansible-playbook build-gateload.yml`  
-* `ansible-playbook install-sync-gateway-service.yml`
 * Manually setup Couchbase Server
     * For each couchbase server in AWS console
         * Find public ip and connect via browser 
@@ -77,7 +76,8 @@ $ python cloudformation_template.py > cloudformation_template.json
 	* If it's the first one, start a new cluster.  Otherwise, join an existing cluster via private ip.
     * Rebalance
     * Create buckets: bucket-1 and bucket-2.  Use 75% RAM for bucket-1, and remaining RAM for bucket-2.
-* `ansible-playbook configure-sync-gateway-writer.yml`
+* `ansible-playbook install-sync-gateway-service.yml`
+* `ansible-playbook configure-sync-gateway-writer.yml` (only needed if testing against the distributed cache branch)
 * `cd ../.. && python generate_gateload_configs.py` 
 * Run gateload on all gateload machines via:
     * ssh in
