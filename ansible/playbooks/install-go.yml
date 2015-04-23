@@ -7,6 +7,12 @@
     yum: pkg=git state=latest
   - name: install bc
     yum: pkg=bc state=latest
+  - name: install lsof
+    yum: pkg=lsof state=latest
+  - name: install screen
+    yum: pkg=screen state=latest
+  - name: install emacs
+    yum: pkg=emacs-nox state=latest
   - name: download golang
     get_url: url=http://golang.org/dl/go1.4.2.linux-amd64.tar.gz dest=/tmp mode=0440
   - name: extract go
