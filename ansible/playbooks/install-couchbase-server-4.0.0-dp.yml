@@ -1,0 +1,12 @@
+---
+- hosts: tag_Type_couchbaseserver
+  remote_user: centos
+  sudo: true
+  vars:
+    couchbase_server_centos_ee_version: 4.0.0-1817
+    couchbase_server_centos_ee_package: couchbase-server-enterprise-{{ couchbase_server_centos_ee_version }}-centos6.x86_64.rpm
+    couchbase_server_centos_ee_url: http://latestbuilds.hq.couchbase.com/couchbase-server/sherlock/1817/{{ couchbase_server_centos_ee_package }}
+  tasks:
+    - name: include a file
+      include: install-couchbase-server.yml
+

@@ -1,22 +1,13 @@
 ---
-- hosts: tag_Type_couchbaseserver
-  remote_user: centos
-  sudo: true
-  vars:
-    couchbase_server_centos_ee_version: 3.0.3
-    couchbase_server_centos_ee_package: couchbase-server-enterprise-{{ couchbase_server_centos_ee_version }}-centos6.x86_64.rpm
-    couchbase_server_centos_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_centos_ee_version }}/{{ couchbase_server_centos_ee_package }}
-    couchbase_server_centos_ee_sha256: 1f21843bf0cc86390bc707d7c93bba6e8678dbc0eaf784bb2dc9a6718b46bd04
-  tasks:
-  - name: Download Couchbase Server package
-    get_url: url={{ couchbase_server_centos_ee_url }} dest=/tmp/{{ couchbase_server_centos_ee_package }} sha256sum={{ couchbase_server_centos_ee_sha256 }} timeout=240
-  - name: Install Couchbase Server
-    yum: name=/tmp/{{ couchbase_server_centos_ee_package }} state=present
-  - name: Restart Couchbase Service
-    service: name=couchbase-server.service state=restarted
-  - name: raise max file descriptors
-    copy: src=files/security-nofiles-limit.conf dest=/etc/security/limits.d/20-nofiles.conf owner=root group=root mode=0644
-  - name: Disable Transparent Huge Pages
-    shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done' >> /etc/rc.local
-    shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/defrag; do echo never > $i; done' >> /etc/rc.local
-    shell: for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done
+- name: Download couchbase server
+  get_url: url={{ couchbase_server_centos_ee_url }} dest=/tmp/{{ couchbase_server_centos_ee_package }}
+- name: Install Couchbase Server
+  yum: name=/tmp/{{ couchbase_server_centos_ee_package }} state=present
+- name: Restart Couchbase Service
+  service: name=couchbase-server.service state=restarted
+- name: raise max file descriptors
+  copy: src=files/security-nofiles-limit.conf dest=/etc/security/limits.d/20-nofiles.conf owner=root group=root mode=0644
+- name: Disable Transparent Huge Pages
+  shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done' >> /etc/rc.local
+  shell: echo 'for i in /sys/kernel/mm/*transparent_hugepage/defrag; do echo never > $i; done' >> /etc/rc.local
+  shell: for i in /sys/kernel/mm/*transparent_hugepage/enabled; do echo never > $i; done
