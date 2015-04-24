@@ -147,7 +147,7 @@
             "Properties": {
                 "BlockDeviceMappings": [
                     {
-                        "DeviceName": "/dev/xvda",
+                        "DeviceName": "/dev/sda1",
                         "Ebs": {
                             "DeleteOnTermination": "true",
                             "VolumeSize": 60,
@@ -156,7 +156,7 @@
                     }
                 ],
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "c3.xlarge",
+                "InstanceType": "c3.8xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -182,7 +182,7 @@
             "Properties": {
                 "BlockDeviceMappings": [
                     {
-                        "DeviceName": "/dev/xvda",
+                        "DeviceName": "/dev/sda1",
                         "Ebs": {
                             "DeleteOnTermination": "true",
                             "VolumeSize": 60,
@@ -191,7 +191,7 @@
                     }
                 ],
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "c3.xlarge",
+                "InstanceType": "c3.8xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -217,7 +217,7 @@
             "Properties": {
                 "BlockDeviceMappings": [
                     {
-                        "DeviceName": "/dev/xvda",
+                        "DeviceName": "/dev/sda1",
                         "Ebs": {
                             "DeleteOnTermination": "true",
                             "VolumeSize": 60,
@@ -226,7 +226,7 @@
                     }
                 ],
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "c3.xlarge",
+                "InstanceType": "c3.8xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -250,8 +250,18 @@
         },
         "gateload0": {
             "Properties": {
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "DeleteOnTermination": "true",
+                            "VolumeSize": 20,
+                            "VolumeType": "gp2"
+                        }
+                    }
+                ],
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m3.medium",
+                "InstanceType": "m3.xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -273,35 +283,20 @@
             },
             "Type": "AWS::EC2::Instance"
         },
-        "gateload1": {
-            "Properties": {
-                "ImageId": "ami-96a818fe",
-                "InstanceType": "m3.medium",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "CouchbaseSecurityGroup"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "gateload1"
-                    },
-                    {
-                        "Key": "Type",
-                        "Value": "gateload"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::Instance"
-        },
         "syncgateway0": {
             "Properties": {
+                "BlockDeviceMappings": [
+                    {
+                        "DeviceName": "/dev/sda1",
+                        "Ebs": {
+                            "DeleteOnTermination": "true",
+                            "VolumeSize": 20,
+                            "VolumeType": "gp2"
+                        }
+                    }
+                ],
                 "ImageId": "ami-96a818fe",
-                "InstanceType": "m3.large",
+                "InstanceType": "c3.2xlarge",
                 "KeyName": {
                     "Ref": "KeyName"
                 },
@@ -318,56 +313,6 @@
                     {
                         "Key": "Name",
                         "Value": "syncgateway0"
-                    },
-                    {
-                        "Key": "Type",
-                        "Value": "syncgateway"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::Instance"
-        },
-        "syncgateway1": {
-            "Properties": {
-                "ImageId": "ami-96a818fe",
-                "InstanceType": "m3.large",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "CouchbaseSecurityGroup"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "syncgateway1"
-                    },
-                    {
-                        "Key": "Type",
-                        "Value": "syncgateway"
-                    }
-                ]
-            },
-            "Type": "AWS::EC2::Instance"
-        },
-        "syncgateway2": {
-            "Properties": {
-                "ImageId": "ami-96a818fe",
-                "InstanceType": "m3.large",
-                "KeyName": {
-                    "Ref": "KeyName"
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "CouchbaseSecurityGroup"
-                    }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "syncgateway2"
                     },
                     {
                         "Key": "Type",
