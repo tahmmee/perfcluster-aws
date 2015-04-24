@@ -14,7 +14,7 @@
          dest=/home/centos/forestdb
          recursive=true
   - name: create forestdb build directory
-    file: path=/home/centos/forestdb/build state=directory	
+    file: path=/home/centos/forestdb/build state=directory
   - name: forestdb cmake
     shell: cmake ../ && make all && make install chdir=/home/centos/forestdb/build
   - name: symlink the forestdb library into /lib64 dir
