@@ -98,7 +98,7 @@ for i in xrange(NUM_COUCHBASE_SERVERS):
     name = "couchbaseserver{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7
-    instance.InstanceType = "c3.xlarge"
+    instance.InstanceType = "c3.8xlarge"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="couchbaseserver")
@@ -120,7 +120,7 @@ for i in xrange(NUM_SYNC_GW_SERVERS):
     name = "syncgateway{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7 
-    instance.InstanceType = "m3.large"
+    instance.InstanceType = "c3.2xlarge"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.BlockDeviceMappings = [
@@ -148,7 +148,7 @@ for i in xrange(NUM_GATELOADS):
     name = "gateload{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7 
-    instance.InstanceType = "m3.medium"
+    instance.InstanceType = "m3.xlarge"
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="gateload")
