@@ -122,3 +122,15 @@ For example if you have provisioned each cluster using a different IAM use accou
 ```
 $ ansible-playbook -l key_tleyden hello-world.yml
 ```
+
+## Running Gatling instead of Gateload
+
+Replace the steps above from:
+* `cd ../.. && python generate_gateload_configs.py` 
+
+With the following:
+
+```
+$ ansible-playbook -l key_tleyden configure-gatling.yml
+$ ansible-playbook -l key_tleyden run-gatling-theme.yml
+```
