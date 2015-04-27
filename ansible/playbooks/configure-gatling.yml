@@ -41,7 +41,7 @@
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
 
   - name: Set sg-gatling-load baseURL for all themes
-    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHost>.*</simulation.targetHost>' line='<simulation.targetHost>{{ groups.tag_Type_syncgateway | intersect(groups.key_andy_mac) | join(', ') }}</simulation.targetHost>'
+    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHost>.*</simulation.targetHost>' line='<simulation.targetHost>{{ groups.tag_Type_syncgateway | intersect(groups.key_ec2keyname) | join(', ') }}</simulation.targetHost>'
 
 
 
