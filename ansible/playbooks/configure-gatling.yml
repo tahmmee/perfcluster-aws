@@ -8,7 +8,6 @@
 - hosts: tag_Type_gateload
   vars:
     ec2keyname: key_andy_mac
-    targetHosts: groups.tag_Type_syncgateway | intersect(groups.{{ ec2keyname }}) | join(', ')
   remote_user: centos
   sudo: yes
 
@@ -42,6 +41,7 @@
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
 
   - name: Set sg-gatling-load baseURL for all themes
-    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHost>.*</simulation.targetHost>' line='<simulation.targetHost>{{ targetHosts }}</simulation.targetHost>'
+    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHost>.*</simulation.targetHost>' line='<simulation.targetHost>{{ groups.tag_Type_syncgateway | intersect(groups[ec2keyname]) | join(', ') }}</simulation.targetHost>'
+
 
 
