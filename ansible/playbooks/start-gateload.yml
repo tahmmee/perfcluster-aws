@@ -1,6 +1,17 @@
 ---
-- hosts: tag_Type_gateload
+- hosts: tag_Type_gateload:&tag_aws_cloudformation_logical_id_gateload0
   remote_user: centos
   tasks:
-  - name: start gateload
-    shell: "gateload -workload=gateload_config.json > gateload.out 2>&1" chdir=/home/centos
+  - name: kill previous gateload screen
+    shell: screen -X -S gateload kill
+  - name: kill previous gateload_expvars screen
+    shell: screen -X -S gateload_expvars kill
+  - name: start gateload in screen
+    shell: screen -d -m -S gateload gateload -workload=gateload_config.json
+  - name: remove previous expvar json files
+    shell: rm -rf expvar*.json
+  - name: copy the expvar collection script
+    copy: src=files/collect_expvars.sh dest=/home/centos/collect_expvars.sh owner=centos group=centos mode=0755    
+  - name: collect expvar json in screen
+    shell: screen -d -m -S gateload_expvars ./collect_expvars.sh
+    
