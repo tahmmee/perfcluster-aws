@@ -1,11 +1,13 @@
 ---
-- hosts: tag_Type_gateload:&tag_aws_cloudformation_logical_id_gateload0
+- hosts: tag_Type_gateload
   remote_user: centos
   tasks:
   - name: kill previous gateload screen
     shell: screen -X -S gateload kill
+    ignore_errors: yes
   - name: kill previous gateload_expvars screen
     shell: screen -X -S gateload_expvars kill
+    ignore_errors: yes
   - name: start gateload in screen
     shell: screen -d -m -S gateload gateload -workload=gateload_config.json
   - name: remove previous expvar json files
