@@ -80,11 +80,20 @@ $ python cloudformation_template.py > cloudformation_template.json
 * `ansible-playbook install-sync-gateway-service.yml`
 * `ansible-playbook configure-sync-gateway-writer.yml` (only needed if testing against the distributed cache branch)
 * `cd ../.. && python generate_gateload_configs.py` 
-* Run gateload on all gateload machines via:
-    * ssh in
-    * `screen -S gateload`
-    * `gateload -workload=gateload_config.json`
-* Kick off script to collect expvar output (see below)
+* `ansible-playbook start-gateload.yml`
+
+### View test output
+
+* Sync Gateway expvars on $HOST:4985/_expvar
+
+* Gateload expvars $HOST:9876/debug/var
+
+* Gateload expvar snapshots
+
+    * ssh into gateload, and `ls expvar*` to see snapshots
+
+    * ssh into gateload, and run `screen -r gateload` to view gateload logs
+
 
 ## Viewing instances by type
 
