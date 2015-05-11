@@ -152,7 +152,7 @@ for i in xrange(NUM_GATELOADS):
     name = "gateload{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = "ami-96a818fe"  # centos7 
-    instance.InstanceType = NUM_GATELOADS
+    instance.InstanceType = GATELOAD_INSTANCE_TYPE
     instance.SecurityGroups = [Ref(secGrpCouchbase)]
     instance.KeyName = Ref(keyname_param)
     instance.Tags=Tags(Name=name, Type="gateload")
