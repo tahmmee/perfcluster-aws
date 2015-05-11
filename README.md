@@ -15,7 +15,7 @@ Uses a Cloudformation template to spin up all instances.
 $ pip install ansible
 $ pip install boto
 $ pip install troposphere
-$ pip install boto
+$ pip install awscli
 ```
 
 **Note: the full list of required packages and versions are listed in requirements.txt**
@@ -55,19 +55,27 @@ $ python cloudformation_template.py > cloudformation_template.json
 
 ### Kick off EC2 instances
 
-* Generate cloudformation_template.json template as described above
-* Upload cloudformation_template.json to s3.  Example: [cloudformation_template.json](http://couchbase-mobile.s3.amazonaws.com/perfcluster-aws/cloudformation_template.json)
-* Go to the AWS Cloudformation web ui, anc create a stack based on cloudformation_template.json
+** Via AWS CLI **
+
+```
+aws cloudformation create-stack --stack-name CouchbasePerfCluster --region us-east-1 \
+--template-body "file://cloudformation_template.json" \
+--parameters "ParameterKey=KeyName,ParameterValue=<your_keypair_name>"
+```
+
+Alternatively, it can be kicked off via the AWS web UI with the restriction that the AWS cloudformation_template.json file must be uploaded to [S3](http://couchbase-mobile.s3.amazonaws.com/perfcluster-aws/cloudformation_template.json).
 
 ### Provision EC2 instances
 
 * Find the private ip of one of the couchcbase server instances via the AWS web UI
 * Open `/ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
-* `ansible-playbook install-go.yml`
-* `ansible-playbook install-couchbase-server-3.0.3.yml` 
-* `ansible-playbook build-sync-gateway.yml`
-    * To use a different branch: `ansible-playbook build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"`
-* `ansible-playbook build-gateload.yml`  
+* `cd ansible/playbooks`
+* `export KEYNAME=key_yourkeyname` 
+* `ansible-playbook -l $KEYNAME install-go.yml`
+* `ansible-playbook -l $KEYNAME install-couchbase-server-3.0.3.yml` 
+* `ansible-playbook -l $KEYNAME build-sync-gateway.yml`
+    * To use a different branch: `ansible-playbook -l $KEYNAME build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"`
+* `ansible-playbook -l $KEYNAME build-gateload.yml`  
 * Manually setup Couchbase Server
     * For each couchbase server in AWS console
         * Find public ip and connect via browser 
@@ -77,12 +85,29 @@ $ python cloudformation_template.py > cloudformation_template.json
 	* If it's the first one, start a new cluster.  Otherwise, join an existing cluster via private ip.
     * Rebalance
     * Create buckets: bucket-1 and bucket-2.  Use 75% RAM for bucket-1, and remaining RAM for bucket-2.
-* `ansible-playbook install-sync-gateway-service.yml`
-* `ansible-playbook configure-sync-gateway-writer.yml` (only needed if testing against the distributed cache branch)
-* `cd ../.. && python generate_gateload_configs.py` 
-* `ansible-playbook start-gateload.yml`
+* `ansible-playbook -l $KEYNAME install-sync-gateway-service.yml`
 
-### View test output
+If you are testing the Sync Gateway distributed cache branch, one extra step is needed:
+
+```
+ansible-playbook -l $KEYNAME configure-sync-gateway-writer.yml
+```
+
+### Starting Gateload tests
+
+```
+* `cd ../.. && python generate_gateload_configs.py` 
+* `ansible-playbook -l $KEYNAME start-gateload.yml`
+```
+
+### Starting Gatling tests
+
+```
+$ ansible-playbook -l $KEYNAME configure-gatling.yml
+$ ansible-playbook -l $KEYNAME run-gatling-theme.yml
+```
+
+### View Gatelod test output
 
 * Sync Gateway expvars on $HOST:4985/_expvar
 
@@ -93,7 +118,6 @@ $ python cloudformation_template.py > cloudformation_template.json
     * ssh into gateload, and `ls expvar*` to see snapshots
 
     * ssh into gateload, and run `screen -r gateload` to view gateload logs
-
 
 ## Viewing instances by type
 
@@ -108,7 +132,6 @@ The same can be done for Sync Gateways and Gateload instances.  Here are the ful
 * tag_Type_couchbaseserver
 * tag_Type_syncgateway
 * tag_Type_gateload
-
 
 ## Collecting expvar output
 
@@ -132,14 +155,44 @@ For example if you have provisioned each cluster using a different IAM use accou
 $ ansible-playbook -l key_tleyden hello-world.yml
 ```
 
-## Running Gatling instead of Gateload
+## Splunk setup
 
-Replace the steps above from:
-* `cd ../.. && python generate_gateload_configs.py` 
+### One-time setup on Splunk Server
 
-With the following:
+* Login via web admin ui to [http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/](http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/) 
+* Go to Settings / Fending and receiving -> configure receiving
+* Add receiver with port 9997 
+
+### Installing Splunk forwarders
 
 ```
-$ ansible-playbook -l key_tleyden configure-gatling.yml
-$ ansible-playbook -l key_tleyden run-gatling-theme.yml
+$ wget -O splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm 'http://www.splunk.com/page/download_track?file=6.2.2/universalforwarder/linux/splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm&ac=adwords-syslog&wget=true&name=wget&platform=Linux&architecture=x86_64&version=6.2.2&product=splunk&typed=release'
+$ sudo rpm -i splunkforwarder-6.2.2-255606-linux-2.6-x86_64.rpm
+$ sudo bash 
+$ cd /opt/splunkforwarder/bin
+$ ./splunk start --accept-license
 ```
+
+### Configuring Splunk forwarder
+
+```
+$ sudo bash
+$ cd /opt/splunkforwarder/bin/ 
+$ ./splunk add forward-server ec2-54-237-61-203.compute-1.amazonaws.com:9997
+```
+
+When prompted for `Splunk username`, which are the *local credentials* for the Splunk forwarder, not for the Splunk server, enter the default values:
+
+* **Splunk username:** admin
+* **Password:** changeme
+
+Test the forwarder:
+
+```
+$ ./splunk list forward-server
+Active forwards:
+	ec2-54-237-61-203.compute-1.amazonaws.com:9997
+Configured but inactive forwards:
+	None
+```
+
