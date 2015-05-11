@@ -13,6 +13,8 @@
     yum: pkg=screen state=latest
   - name: install emacs
     yum: pkg=emacs-nox state=latest
+  - name: install graphviz
+    yum: pkg=graphviz state=latest    
   - name: download golang
     get_url: url=http://golang.org/dl/go1.4.2.linux-amd64.tar.gz dest=/tmp mode=0440
   - name: extract go
