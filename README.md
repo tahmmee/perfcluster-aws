@@ -173,7 +173,7 @@ $ cd /opt/splunkforwarder/bin
 $ ./splunk start --accept-license
 ```
 
-### Configuring Splunk forwarder
+### Add forward-server to Splunk forwarder
 
 ```
 $ sudo bash
@@ -196,3 +196,39 @@ Configured but inactive forwards:
 	None
 ```
 
+### Install and Configure UNIX app on Indexer and *nix forwarders
+
+Extracted from [answers.splunk.com article](http://answers.splunk.com/answers/50082/how-do-i-configure-a-splunk-forwarder-on-linux.html)
+
+***One-time setup on Splunk Server***
+
+* Login via web admin ui to [http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/](http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/) 
+* Go to Apps and hit the + button
+* Search for ‘Splunk App for Unix and Linux’ and Install
+* You will be prompted for your splunk.com account.
+* Restart Splunk when prompted
+* Go to Splunk App For Unix add-on, and in the popup, hit "Configure".  Then hit the "Save" button.
+
+***Install Add-on to forwarder***
+
+These steps will install the  "Splunk Add-on for Unix and Linux" on the Universal Forwarder.
+
+* `wget http://couchbase-mobile.s3.amazonaws.com/perfcluster-aws/splunk_unix_linux_add_on/splunk-add-on-for-unix-and-linux_512.tgz`
+* `tar -C /opt/splunkforwarder/etc/apps/ -xvf splunk-add-on-for-unix-and-linux_512.tgz`
+* `mkdir /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local`
+* `cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/defaults/input.conf /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local/`
+* Edit local/inputs.conf to set disabled = 0 for the sections: vmstat.sh, iostat.sh, ps.sh, top.sh, netstat.sh, cpu.sh
+* `/opt/splunkforwarder/bin/splunk restart`
+
+Note: The data collected by the unix app is by default placed into a separate index called ‘os’ so it will not be searchable within splunk unless you either go through the UNIX app, or include the following in your search query: “index=os” or “index=os OR index=main” (don’t paste doublequotes)
+
+Doc references: [Deploy and Use the Splunk Add-on for Unix and Linux](http://docs.splunk.com/Documentation/UnixAddOn/latest/User/Enabledataandscriptedinputs)
+
+
+
+
+### Forward Sync Gw logs
+
+
+
+### Forward Gateload logs
