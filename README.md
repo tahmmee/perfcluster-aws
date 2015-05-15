@@ -97,7 +97,7 @@ ansible-playbook -l $KEYNAME configure-sync-gateway-writer.yml
 
 ```
 * `cd ../.. && python generate_gateload_configs.py` 
-* `ansible-playbook -l $KEYNAME start-gateload.yml`
+* `cd ./ansible/playbooks && ansible-playbook -l $KEYNAME start-gateload.yml`
 ```
 
 ### Starting Gatling tests
@@ -152,7 +152,7 @@ If you need to deploy multiple perf runner clusters into the same AWS account, b
 For example if you have provisioned each cluster using a different IAM use account, you could partition the hosts by the IAM user key pair name e.g. If a users key pair name is 'my_keypair' then the following command will partition the host groups to only those provisioned by that user.
 
 ```
-$ ansible-playbook -l key_tleyden hello-world.yml
+$ ansible-playbook -l key_my_keypair hello-world.yml
 ```
 
 ## Splunk setup
