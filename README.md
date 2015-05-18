@@ -86,6 +86,7 @@ Alternatively, it can be kicked off via the AWS web UI with the restriction that
     * Rebalance
     * Create buckets: bucket-1 and bucket-2.  Use 75% RAM for bucket-1, and remaining RAM for bucket-2.
 * `ansible-playbook -l $KEYNAME install-sync-gateway-service.yml`
+* `ansible-playbook -l $KEYNAME install-splunkforwarder.yml`
 
 If you are testing the Sync Gateway distributed cache branch, one extra step is needed:
 
