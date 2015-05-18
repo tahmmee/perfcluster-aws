@@ -216,7 +216,7 @@ These steps will install the  "Splunk Add-on for Unix and Linux" on the Universa
 * `wget http://couchbase-mobile.s3.amazonaws.com/perfcluster-aws/splunk_unix_linux_add_on/splunk-add-on-for-unix-and-linux_512.tgz`
 * `tar -C /opt/splunkforwarder/etc/apps/ -xvf splunk-add-on-for-unix-and-linux_512.tgz`
 * `mkdir /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local`
-* `cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/defaults/input.conf /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local/`
+* `cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/default/inputs.conf /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local/`
 * Edit local/inputs.conf to set disabled = 0 for the sections: vmstat.sh, iostat.sh, ps.sh, top.sh, netstat.sh, cpu.sh
 * `/opt/splunkforwarder/bin/splunk restart`
 
