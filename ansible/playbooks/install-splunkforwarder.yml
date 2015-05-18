@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Type_syncgateway
+- hosts: tag_Type_syncgateway:tag_Type_syncgateway:tag_Type_gateload
   remote_user: centos
   sudo: true
   vars:
@@ -35,22 +35,23 @@
     shell: tar -C /opt/splunkforwarder/etc/apps/ -xvf /tmp/{{ splunk_add_on_for_unix_and_linux }}
   - name: copy Splunk Add-on for Unix and Linux' congigs
     shell: mkdir /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local && cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/default/inputs.conf {{ inputs_conf }}
-  - name: disable vmstat in "inputs.conf"
+
+  - name: enable vmstat in "inputs.conf"
     shell: sed -i ""$(($(awk '/vmstat\.sh./{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
-  - name: disable iostat in "inputs.conf"
+  - name: enable iostat in "inputs.conf"
     shell: sed -i ""$(($(awk '/iostat\.sh/{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
-  - name: disable ps in "inputs.conf"
+  - name: enable ps in "inputs.conf"
     shell: sed -i ""$(($(awk '/ps\.sh/{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
-  - name: disable top in "inputs.conf"
+  - name: enable top in "inputs.conf"
     shell: sed -i ""$(($(awk '/top\.sh/{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
-  - name: disable netstat in "inputs.conf"
+  - name: enable netstat in "inputs.conf"
     shell: sed -i ""$(($(awk '/netstat\.sh/{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
-  - name: disable cpu in "inputs.conf"
+  - name: enable cpu in "inputs.conf"
     shell: sed -i ""$(($(awk '/cpu\.sh/{ print NR; exit }' {{ inputs_conf }})+5))"s/.*/disabled = 0/" {{ inputs_conf }}
     sudo: true
   - name: restart splunkforwarder
