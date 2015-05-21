@@ -18,7 +18,6 @@
     couchbase_server_centos_ee_package: couchbase-server-enterprise-{{ couchbase_server_centos_ee_version }}-centos6.x86_64.rpm
     couchbase_server_centos_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_centos_ee_version }}/{{ couchbase_server_centos_ee_package }}
 
-
     couchbase_server_admin: Administrator
     couchbase_server_password: password
     couchbase_server_ram: "{{ ansible_memtotal_mb|int }}"

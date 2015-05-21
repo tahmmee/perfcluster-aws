@@ -76,15 +76,6 @@ Alternatively, it can be kicked off via the AWS web UI with the restriction that
 * `ansible-playbook -l $KEYNAME build-sync-gateway.yml`
     * To use a different branch: `ansible-playbook -l $KEYNAME build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"`
 * `ansible-playbook -l $KEYNAME build-gateload.yml`  
-* Manually setup Couchbase Server
-    * For each couchbase server in AWS console
-        * Find public ip and connect via browser 
-        * Go through Setup Wizard
-        * For Configure Server Hostname / Hostname, use the private IP of the instance
-	* Create a small default bucket of 128 MB of RAM
-	* If it's the first one, start a new cluster.  Otherwise, join an existing cluster via private ip.
-    * Rebalance
-    * Create buckets: bucket-1 and bucket-2.  Use 75% RAM for bucket-1, and remaining RAM for bucket-2.
 * `ansible-playbook -l $KEYNAME install-sync-gateway-service.yml`
 * `ansible-playbook -l $KEYNAME install-splunkforwarder.yml`
 
