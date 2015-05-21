@@ -1,5 +1,5 @@
 ---
-- hosts: tag_Type_syncgateway:tag_Type_syncgateway:tag_Type_gateload
+- hosts: tag_Type_couchbaseserver:tag_Type_syncgateway:tag_Type_gateload
   remote_user: centos
   sudo: true
   vars:
