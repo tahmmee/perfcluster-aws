@@ -55,7 +55,7 @@ $ python cloudformation_template.py > cloudformation_template.json
 
 ### Kick off EC2 instances
 
-** Via AWS CLI **
+**Via AWS CLI**
 
 ```
 aws cloudformation create-stack --stack-name CouchbasePerfCluster --region us-east-1 \
