@@ -208,8 +208,9 @@ These steps will install the  "Splunk Add-on for Unix and Linux" on the Universa
 * `wget http://couchbase-mobile.s3.amazonaws.com/perfcluster-aws/splunk_unix_linux_add_on/splunk-add-on-for-unix-and-linux_512.tgz`
 * `tar -C /opt/splunkforwarder/etc/apps/ -xvf splunk-add-on-for-unix-and-linux_512.tgz`
 * `mkdir /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local`
-* `cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/default/inputs.conf /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local/`
-* Edit local/inputs.conf to set disabled = 0 for the sections: vmstat.sh, iostat.sh, ps.sh, top.sh, netstat.sh, cpu.sh
+* `cp /opt/splunkforwarder/etc/apps/Splunk_TA_nix/defaults/input.conf /opt/splunkforwarder/etc/apps/Splunk_TA_nix/local/`
+* Edit local/inputs.conf to set disabled = 0 for the sections: vmstat.sh, iostat.sh, ps.sh, top.sh, netstat.sh, cpu.sh (note: these will probably change)
+*  `/opt/splunkforwarder/bin/splunk add monitor /home/sync_gateway/logs -index main -sourcetype sync_gateway_logs`
 * `/opt/splunkforwarder/bin/splunk restart`
 
 Note: The data collected by the unix app is by default placed into a separate index called ‘os’ so it will not be searchable within splunk unless you either go through the UNIX app, or include the following in your search query: “index=os” or “index=os OR index=main” (don’t paste doublequotes)
