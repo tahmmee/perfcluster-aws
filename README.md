@@ -88,8 +88,10 @@ ansible-playbook -l $KEYNAME configure-sync-gateway-writer.yml
 ### Starting Gateload tests
 
 ```
-* `cd ../.. && python generate_gateload_configs.py` 
-* `cd ./ansible/playbooks && ansible-playbook -l $KEYNAME start-gateload.yml`
+$ cd ../..
+$ python generate_gateload_configs.py  # generates and uploads gateload configs with correct SG IP / user offset
+$ cd ansible/playbooks
+$ ansible-playbook -l $KEYNAME start-gateload.yml
 ```
 
 ### Starting Gatling tests
