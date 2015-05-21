@@ -1,4 +1,11 @@
 ---
+- name: Stop Couchbase Service
+  service: name=couchbase-server.service state=stopped
+- name: Uninstall couchbase server
+  shell: rpm -e couchbase-server
+  ignore_errors: yes
+- name: Remove all couchbase server residue
+  shell: rm -rf /opt/couchbase
 - name: Download couchbase server
   get_url: url={{ couchbase_server_centos_ee_url }} dest=/tmp/{{ couchbase_server_centos_ee_package }}
 - name: Install Couchbase Server
