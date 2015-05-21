@@ -8,12 +8,14 @@
   - name: kill previous gateload_expvars screen
     shell: screen -X -S gateload_expvars kill
     ignore_errors: yes
+  - name: copy the run gateload script
+    copy: src=files/run_gateload.sh dest=/home/centos/ owner=centos group=centos mode=0755
   - name: start gateload in screen
-    shell: screen -d -m -S gateload gateload -workload=gateload_config.json
+    shell: screen -d -m -S gateload ./run_gateload.sh
   - name: remove previous expvar json files
     shell: rm -rf expvar*.json
   - name: copy the expvar collection script
-    copy: src=files/collect_expvars.sh dest=/home/centos/collect_expvars.sh owner=centos group=centos mode=0755    
+    copy: src=files/collect_expvars.sh dest=/home/centos/collect_expvars.sh owner=centos group=centos mode=0755
   - name: collect expvar json in screen
     shell: screen -d -m -S gateload_expvars ./collect_expvars.sh
     
