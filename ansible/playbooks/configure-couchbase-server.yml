@@ -9,7 +9,7 @@
       shell: "{{ couchbase_server_home_path }}/bin/couchbase-cli cluster-init -c {{ ansible_fqdn }}:{{ couchbase_server_admin_port }} --user={{ couchbase_server_admin }} --password={{ couchbase_server_password }} --cluster-init-username={{ couchbase_server_admin }} --cluster-init-password={{ couchbase_server_password }} --cluster-init-port={{couchbase_server_admin_port}} --cluster-init-ramsize={{ ((couchbase_server_ram|int)*0.8)|int }}"
 
     - name: Initialize primary node
-      shell: "{{ couchbase_server_home_path }}/bin/couchbase-cli node-init -c {{ couchbase_server_node }}:{{ couchbase_server_admin_port }} --user={{ couchbase_server_admin }} --password={{ couchbase_server_password }} --cluster-init-username={{ couchbase_server_admin }} --node-init-hostname={{ couchbase_server_node }}"
+      shell: "{{ couchbase_server_home_path }}/bin/couchbase-cli node-init -c {{ ansible_fqdn }}:{{ couchbase_server_admin_port }} --user={{ couchbase_server_admin }} --password={{ couchbase_server_password }} --cluster-init-username={{ couchbase_server_admin }} --node-init-hostname={{ couchbase_server_node }}"
       when: "{{ cb_major_version['stdout'] }} != 2"
 
     - name: Wait for node to be listening on port 8091
