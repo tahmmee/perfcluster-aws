@@ -2,7 +2,7 @@
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
   vars:
-    couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_public_dns_name']}}"
+    couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
 
   connection: local
   tasks:
@@ -24,7 +24,7 @@
     couchbase_server_admin_port: 8091
     couchbase_server_home_path: /opt/couchbase
 
-    couchbase_server_node: "{{hostvars[ec2_public_dns_name]['ec2_public_dns_name']}}"
+    couchbase_server_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
     couchbase_server_bucket_name: default
     couchbase_server_bucket_name2: bucket-1
     couchbase_server_bucket_name3: bucket-2

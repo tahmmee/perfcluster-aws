@@ -2,7 +2,7 @@
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
   vars:
-    couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_public_dns_name']}}"
+    couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
 
   connection: local
   tasks:
