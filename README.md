@@ -67,15 +67,33 @@ Alternatively, it can be kicked off via the AWS web UI with the restriction that
 
 ### Provision EC2 instances
 
+* Find the private ip of one of the couchcbase server instances via the AWS web UI
+* Open `ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
 * `cd ansible/playbooks`
 * `export KEYNAME=key_yourkeyname` 
-* `ansible-playbook -l $KEYNAME install-go.yml`
-* `ansible-playbook -l $KEYNAME install-couchbase-server-3.0.3.yml` 
-* `ansible-playbook -l $KEYNAME build-sync-gateway.yml`
-    * To use a different branch: `ansible-playbook -l $KEYNAME build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"`
-* `ansible-playbook -l $KEYNAME build-gateload.yml`  
-* `ansible-playbook -l $KEYNAME install-sync-gateway-service.yml`
-* `ansible-playbook -l $KEYNAME install-splunkforwarder.yml`
+* Run command
+```
+ansible-playbook -l $KEYNAME install-go.yml && \
+ansible-playbook -l $KEYNAME install-couchbase-server-3.0.3.yml && \
+ansible-playbook -l $KEYNAME build-sync-gateway.yml && \
+ansible-playbook -l $KEYNAME build-gateload.yml && \
+ansible-playbook -l $KEYNAME install-sync-gateway-service.yml && \
+ansible-playbook -l $KEYNAME install-splunkforwarder.yml
+```
+
+To use a different Sync Gateway branch:
+
+Replace:
+
+```
+ansible-playbook -l $KEYNAME build-sync-gateway.yml
+```
+
+with:
+
+```
+ansible-playbook -l $KEYNAME build-sync-gateway.yml --extra-vars "branch=feature/distributed_cache_stale_ok"
+```
 
 If you are testing the Sync Gateway distributed cache branch, one extra step is needed:
 
