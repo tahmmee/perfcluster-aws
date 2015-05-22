@@ -67,8 +67,6 @@ Alternatively, it can be kicked off via the AWS web UI with the restriction that
 
 ### Provision EC2 instances
 
-* Find the private ip of one of the couchcbase server instances via the AWS web UI
-* Open `ansible/playbooks/files/sync_gateway_config.json` and change db/server and db/remote_cache/server to have the couchbase server ip found in previous step
 * `cd ansible/playbooks`
 * `export KEYNAME=key_yourkeyname` 
 * `ansible-playbook -l $KEYNAME install-go.yml`
