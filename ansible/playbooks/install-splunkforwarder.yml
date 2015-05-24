@@ -28,6 +28,9 @@
   - name: add forward-server to Splunk forwarder
     shell: /opt/splunkforwarder/bin/splunk add forward-server {{ forward_server }} -auth admin:changeme
     sudo: true
+  - name: Test the forwarder
+    shell: /opt/splunkforwarder/bin/splunk list forward-server
+    sudo: true
 
   - name: download 'Splunk Add-on for Unix and Linux'
     get_url: url={{ splunk_add_on_for_unix_and_linux_url }} dest=/tmp/{{ splunk_add_on_for_unix_and_linux }}
@@ -59,10 +62,26 @@
     sudo: true
 
 
+- hosts: tag_Type_syncgateway
+  remote_user: centos
+  sudo: true
+  tasks:
+  - name: Capture sync gateway logs
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/sync_gateway/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    sudo: true
 
+- hosts: tag_Type_gateload
+  remote_user: centos
+  sudo: true
+  tasks:
+  - name: Capture gateload logs
+    shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    sudo: true
 
-
-
-
-
-
+- hosts: tag_Type_couchbaseserver
+  remote_user: centos
+  sudo: true
+  tasks:
+  - name: Capture couchbase logs
+    shell: /opt/splunkforwarder/bin/splunk add monitor /opt/couchbase/var/lib/couchbase/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    sudo: true

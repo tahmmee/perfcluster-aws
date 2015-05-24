@@ -168,7 +168,7 @@ $ ansible-playbook -l key_my_keypair hello-world.yml
 ### One-time setup on Splunk Server
 
 * Login via web admin ui to [http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/](http://ec2-54-237-61-203.compute-1.amazonaws.com:8000/) 
-* Go to Settings / Fending and receiving -> configure receiving
+* Go to Settings / Forwarding and receiving -> configure receiving
 * Add receiver with port 9997 
 
 ### Installing Splunk forwarders
