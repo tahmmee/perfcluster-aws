@@ -61,13 +61,25 @@
     shell: /opt/splunkforwarder/bin/splunk restart
     sudo: true
 
-
 - hosts: tag_Type_syncgateway
   remote_user: centos
   sudo: true
   tasks:
   - name: Capture sync gateway logs
-    shell: /opt/splunkforwarder/bin/splunk add monitor /home/sync_gateway/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/sync_gateway/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
+    sudo: true
+  - name: kill collect_url_requests.sh
+    shell: pkill -f "collect_url_requests.sh"
+    sudo: true
+    ignore_errors: yes
+  - name: copy collect_url_requests.sh to host
+    template: src=collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=sync_gateway group=sync_gateway mode=0777 force=true
+    sudo: true
+  - name: Collect _expvar logs
+    shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:4985/_expvar -f /home/centos/_expvar.logs -t 60 1>/dev/null 2>&1) &)
+    sudo: true
+  - name: Capture _expvar logs
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/_expvar.logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
     sudo: true
 
 - hosts: tag_Type_gateload
@@ -75,7 +87,20 @@
   sudo: true
   tasks:
   - name: Capture gateload logs
-    shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
+    sudo: true
+  - name: kill collect_url_requests.sh
+    shell: pkill -f "collect_url_requests.sh"
+    sudo: true
+    ignore_errors: yes
+  - name: copy collect_url_requests.sh to host
+    template: src=collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=centos mode=0777 force=true
+    sudo: true
+  - name: Collect debug/vars logs
+    shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:9876/debug/vars -f /home/centos/debug_vars.logs -t 60 1>/dev/null 2>&1) &)
+    sudo: true
+  - name: Capture debug/vars logs
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/debug_vars.logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
     sudo: true
 
 - hosts: tag_Type_couchbaseserver
