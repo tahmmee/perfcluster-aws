@@ -41,7 +41,8 @@
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
 
   - name: Set sg-gatling-load baseURL for all themes
-    lineinfile: dest=/home/projects/sg-gatling-load/pom.xml regexp='<simulation.targetHosts>.*</simulation.targetHosts>' line='<simulation.targetHosts>{{ groups.tag_Type_syncgateway | intersect(groups[ec2keyname]) | join(',') }}</simulation.targetHosts>'
-
-
+    lineinfile: 
+      dest=/home/projects/sg-gatling-load/pom.xml 
+      regexp='<simulation.targetHosts>.*</simulation.targetHosts>' 
+      line='<simulation.targetHosts>{% set comma = joiner(",") %} {% for item in groups.tag_Type_syncgateway | intersect(groups[ec2keyname]) -%} {{ comma() }}{{ hostvars[item].ec2_private_ip_address }} {%- endfor %}</simulation.targetHosts>'
 
