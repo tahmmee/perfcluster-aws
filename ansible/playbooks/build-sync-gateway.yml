@@ -9,7 +9,7 @@
   - name: clone sync gateway git repo
     git: repo=https://github.com/couchbase/sync_gateway.git
          dest=/home/centos/sync_gateway
-         recursive=true
+         recursive=no
   - name: checkout feature branch
     shell: git checkout {{ branch }} chdir=/home/centos/sync_gateway
   - name: update submodules
