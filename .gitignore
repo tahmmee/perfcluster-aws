@@ -17,3 +17,4 @@ temp_couchbase_server_primary_node
 temp_gateload_node
 temp_cbagent_config_template.conf
 
+cloudformation_template.json
