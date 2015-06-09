@@ -1,4 +1,35 @@
 ---
+- hosts: tag_Type_couchbaseserver
+  remote_user: centos
+  vars:
+    couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
+  connection: local
+  tasks:
+
+    - shell: echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node
+
+- hosts: tag_Type_gateload
+  remote_user: centos
+  vars:
+    gateload_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
+
+  connection: local
+  tasks:
+
+    - shell: echo {{gateload_node}} > ../../temp_gateload_node
+
+- hosts: 127.0.0.1
+  connection: local
+  vars:
+    couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+  tasks:
+
+   - name: test of local copy
+     action: copy src=./files/cbagent_config_template.conf dest=../../temp_cbagent_config_template.conf
+
+   - shell: sed -i 's/MASTER_HOST/{{ couchbase_server_primary_node }}/g' ../../temp_cbagent_config_template.conf
+
+
 - hosts: tag_Type_couchbaseserver:tag_Type_syncgateway:tag_Type_gateload
   remote_user: centos
   sudo: true
@@ -85,6 +116,9 @@
 - hosts: tag_Type_gateload
   remote_user: centos
   sudo: true
+  vars:
+    gateload_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
+    primary_gateload_node: "{{ lookup('file', '../../temp_gateload_node') }}"
   tasks:
   - name: Capture gateload logs
     shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
@@ -103,10 +137,57 @@
     shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/debug_vars.logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
     sudo: true
 
+
+  - name: Clone cbagent into /home/centos/cbagent
+    git: repo=https://github.com/andreibaranouski/cbagent
+         dest=/home/centos/cbagent
+         force=yes
+    when: primary_gateload_node == gateload_node
+  - name: install pip
+    shell: easy_install pip
+    when: primary_gateload_node == gateload_node
+  - name: install python-devel
+    yum: pkg=python-devel state=latest
+  - name: install development tools
+    shell: yum groupinstall -y 'Development Tools'
+  - name: Download couchbase.repo
+    get_url: url=http://packages.couchbase.com/rpm/couchbase-centos62-x86_64.repo dest=/etc/yum.repos.d/couchbase.repo
+    when: primary_gateload_node == gateload_node
+  - name: yum check-update
+    shell: yum check-update
+    when: primary_gateload_node == gateload_node
+    ignore_errors: yes
+  - name: install libcouchbase2-libevent libcouchbase-devel
+    shell: sudo yum install -y libcouchbase2-libevent libcouchbase-devel --skip-broken
+    when: primary_gateload_node == gateload_node
+  - name: install cbagent requirements
+    shell: cd /home/centos/cbagent && pip install -r requirements.txt
+    when: primary_gateload_node == gateload_node
+  - name: copy collect_url_requests.sh to host
+    template: src=../../temp_cbagent_config_template.conf dest=/home/centos/cbagent/temp_cbagent_stats_monitor.spec force=true
+    when: primary_gateload_node == gateload_node
+  - name: kill cbagent
+    shell: pkill -f cbagent
+    ignore_errors: yes
+    when: primary_gateload_node == gateload_node
+  - name: Remove previous stats
+    shell: "rm -rf /tmp/stats_folder/*"
+    when: primary_gateload_node == gateload_node
+  - name: Run cbagent ns stats
+    shell: "cd /home/centos/cbagent/ && nohup python -m cbagent --ns temp_cbagent_stats_monitor.spec 1>/dev/null 2>&1 &"
+    when: primary_gateload_node == gateload_node
+  - name: Run cbagent active tasks stats
+    shell: "cd /home/centos/cbagent/ && nohup python -m cbagent --at temp_cbagent_stats_monitor.spec >/dev/null 2>&1 &"
+    when: primary_gateload_node == gateload_node
+  - name: Capture couchbase stats
+    shell: /opt/splunkforwarder/bin/splunk add monitor /tmp/stats_folder -index main -sourcetype sync_gateway_logs -auth admin:changeme
+    when: primary_gateload_node == gateload_node
+
+
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
   sudo: true
   tasks:
   - name: Capture couchbase logs
-    shell: /opt/splunkforwarder/bin/splunk add monitor /opt/couchbase/var/lib/couchbase/logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
+    shell: /opt/splunkforwarder/bin/splunk add monitor /opt/couchbase/var/lib/couchbase/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
     sudo: true

@@ -77,7 +77,7 @@
   - name: install python-devel
     yum: pkg=python-devel state=latest
 
-  - name: Download splunkforwarder
+  - name: Download couchbase.repo
     get_url: url=http://packages.couchbase.com/rpm/couchbase-centos62-x86_64.repo dest=/etc/yum.repos.d/couchbase.repo
     when: primary_gateload_node == gateload_node
 
