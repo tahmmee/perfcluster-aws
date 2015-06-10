@@ -5,24 +5,24 @@
     couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
   connection: local
   tasks:
-
     - shell: "echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node"
+
 
 - hosts: tag_Type_gateload
   remote_user: centos
   vars:
     gateload_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
-
   connection: local
   tasks:
-
     - shell: "echo {{gateload_node}} > ../../temp_gateload_node"
+
 
 - hosts: 127.0.0.1
   connection: local
-  vars:
-    couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
   tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
 
    - name: test of local copy
      action: copy src=./files/cbagent_config_template.conf dest=../../temp_cbagent_config_template.conf
@@ -118,8 +118,10 @@
   sudo: true
   vars:
     gateload_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
-    primary_gateload_node: "{{ lookup('file', '../../temp_gateload_node') }}"
   tasks:
+  - name: set primary_gateload_node variable
+    set_fact:
+      primary_gateload_node: "{{ lookup('file', '../../temp_gateload_node') }}"
   - name: Capture gateload logs
     shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
     sudo: true

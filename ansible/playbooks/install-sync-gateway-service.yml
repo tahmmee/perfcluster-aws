@@ -14,8 +14,10 @@
   sudo: true
   vars:
     writer: "false"
-    couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
   tasks:
+  - name: set couchbase_server_primary_node variable
+    set_fact:
+      couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
   - name: stop any sync gateway services that might be running
     service: name=sync_gateway state=stopped
   - name: add sync gateway user

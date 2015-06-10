@@ -32,9 +32,11 @@
     couchbase_server_bucket_ram: 128
     couchbase_server_bucket_port: 11211
     couchbase_server_bucket_replica: 1
-    couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
 
   tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
 
     - name: install-couchbase-server
       include: install-couchbase-server.yml
