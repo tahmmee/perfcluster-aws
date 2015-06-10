@@ -153,16 +153,8 @@ do
 done
 ```
 
-## Addional Notes
-
-If you need to deploy multiple perf runner clusters into the same AWS account, by default the ansible playbooks will process the hosts across all the clusters. You can partition the hosts by passing a SUBSET parameter on the command line.
-
-For example if you have provisioned each cluster using a different IAM use account, you could partition the hosts by the IAM user key pair name e.g. If a users key pair name is 'my_keypair' then the following command will partition the host groups to only those provisioned by that user.
-
-```
-$ ansible-playbook -l key_my_keypair hello-world.yml
-```
-
 ## Viewing data on Splunk
+
+First, you will need to [Install Splunk](https://github.com/couchbaselabs/perfcluster-aws/wiki/Setting-up-a-Splunk-Server) on a server somewhere.
 
 Note: The data collected by the unix app is by default placed into a separate index called ‘os’ so it will not be searchable within splunk unless you either go through the UNIX app, or include the following in your search query: “index=os” or “index=os OR index=main” (don’t paste doublequotes)
