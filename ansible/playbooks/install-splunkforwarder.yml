@@ -20,14 +20,14 @@
 - hosts: 127.0.0.1
   connection: local
   tasks:
-    - name: set couchbase_server_primary_node variable
-      set_fact:
-        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+  - name: set couchbase_server_primary_node variable
+    set_fact:
+      couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
 
-   - name: test of local copy
-     action: copy src=./files/cbagent_config_template.conf dest=../../temp_cbagent_config_template.conf
+  - name: test of local copy
+    action: copy src=./files/cbagent_config_template.conf dest=../../temp_cbagent_config_template.conf
 
-   - shell: sed -i -e 's/MASTER_HOST/{{ couchbase_server_primary_node }}/g' ../../temp_cbagent_config_template.conf
+  - shell: sed -i -e 's/MASTER_HOST/{{ couchbase_server_primary_node }}/g' ../../temp_cbagent_config_template.conf
 
 
 - hosts: tag_Type_couchbaseserver:tag_Type_syncgateway:tag_Type_gateload
