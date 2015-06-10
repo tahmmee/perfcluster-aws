@@ -18,7 +18,7 @@ $ pip install troposphere
 $ pip install awscli
 ```
 
-**Note: the full list of required packages and versions are listed in requirements.txt**
+Alternatively, you can use the [Docker image](https://github.com/couchbaselabs/perfcluster-aws/wiki/Running-under-Docker) which has all the pre-requisites pre-installed.
 
 **Add boto configuration**
 
