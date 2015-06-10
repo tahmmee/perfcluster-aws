@@ -6,7 +6,7 @@
   connection: local
   tasks:
 
-    - shell: echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node
+    - shell: "echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node"
 
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
