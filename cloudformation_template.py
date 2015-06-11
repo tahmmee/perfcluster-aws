@@ -15,10 +15,12 @@ t.add_description(
 
 NUM_COUCHBASE_SERVERS=3
 NUM_SYNC_GW_SERVERS=1
+NUM_LB_SERVERS=0
 NUM_GATELOADS=1
 
 COUCHBASE_INSTANCE_TYPE="m3.medium"
 SYNC_GW_INSTANCE_TYPE="m3.medium"
+LOAD_BALANCER_INSTANCE_TYPE="m3.medium"
 GATELOAD_INSTANCE_TYPE="m3.medium"
 
 def createCouchbaseSecurityGroups(t):
@@ -144,6 +146,28 @@ for i in xrange(NUM_SYNC_GW_SERVERS):
         instance.Tags=Tags(Name=name, Type="syncgateway", CacheType="writer")
     else:
         instance.Tags=Tags(Name=name, Type="syncgateway")
+
+    t.add_resource(instance)
+
+# Load Balancer instances (ubuntu ami)
+for i in xrange(NUM_LB_SERVERS):
+    name = "loadbalancer{}".format(i)
+    instance = ec2.Instance(name)
+    instance.ImageId = "ami-96a818fe"  # centos7 
+    instance.InstanceType = LOAD_BALANCER_INSTANCE_TYPE
+    instance.SecurityGroups = [Ref(secGrpCouchbase)]
+    instance.KeyName = Ref(keyname_param)
+    instance.Tags=Tags(Name=name, Type="loadbalancer")
+    instance.BlockDeviceMappings = [
+        ec2.BlockDeviceMapping(
+            DeviceName = "/dev/sda1",
+            Ebs = ec2.EBSBlockDevice(
+                DeleteOnTermination = True,
+                VolumeSize = 20,
+                VolumeType = "gp2"
+            )
+        )
+    ]
 
     t.add_resource(instance)
 
