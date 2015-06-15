@@ -1,6 +1,7 @@
 ---
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
+  serial: 1
   vars:
     couchbase_server_primary_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
   connection: local
