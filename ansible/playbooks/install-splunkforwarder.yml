@@ -105,7 +105,7 @@
     sudo: true
     ignore_errors: yes
   - name: copy collect_url_requests.sh to host
-    template: src=collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=sync_gateway group=sync_gateway mode=0777 force=true
+    template: src=./files/collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=sync_gateway group=sync_gateway mode=0777 force=true
     sudo: true
   - name: Collect _expvar logs
     shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:4985/_expvar -f /home/centos/_expvar.logs -t 60 1>/dev/null 2>&1) &)
@@ -131,7 +131,7 @@
     sudo: true
     ignore_errors: yes
   - name: copy collect_url_requests.sh to host
-    template: src=collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=centos mode=0777 force=true
+    template: src=./files/collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=centos mode=0777 force=true
     sudo: true
   - name: Collect debug/vars logs
     shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:9876/debug/vars -f /home/centos/debug_vars.logs -t 60 1>/dev/null 2>&1) &)
@@ -166,7 +166,7 @@
   - name: install cbagent requirements
     shell: cd /home/centos/cbagent && pip install -r requirements.txt
     when: primary_gateload_node == gateload_node
-  - name: copy collect_url_requests.sh to host
+  - name: copy temp_cbagent_config_template.conf to host
     template: src=../../temp_cbagent_config_template.conf dest=/home/centos/cbagent/temp_cbagent_stats_monitor.spec force=true
     when: primary_gateload_node == gateload_node
   - name: kill cbagent
