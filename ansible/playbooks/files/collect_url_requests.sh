@@ -56,7 +56,6 @@ fi
 rm -rf $LOG_FILE
 
 while true; do
-    date >> $LOG_FILE
     curl --silent $REQUEST >> $LOG_FILE
 	sleep $TIME
 done
