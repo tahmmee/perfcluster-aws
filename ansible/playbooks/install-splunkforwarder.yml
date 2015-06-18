@@ -99,32 +99,27 @@
   tasks:
   - name: Capture sync gateway logs
     shell: /opt/splunkforwarder/bin/splunk add monitor /home/sync_gateway/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
-    sudo: true
   - name: kill collect_url_requests.sh
     shell: pkill -f "collect_url_requests.sh"
-    sudo: true
     ignore_errors: yes
   - name: copy collect_url_requests.sh to host
     template: src=./files/collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=sync_gateway group=sync_gateway mode=0777 force=true
-    sudo: true
   - name: Collect _expvar logs
     shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:4985/_expvar -f /home/centos/_expvar.logs -t 60 1>/dev/null 2>&1) &)
-    sudo: true
   - name: Capture _expvar logs
     shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/_expvar.logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
-    sudo: true
 
 - hosts: tag_Type_gateload
   remote_user: centos
-  sudo: true
   vars:
     gateload_node: "{{hostvars[ec2_public_dns_name]['ec2_private_dns_name']}}"
   tasks:
   - name: set primary_gateload_node variable
     set_fact:
       primary_gateload_node: "{{ lookup('file', '../../temp_gateload_node') }}"
+  - file: path=/home/centos/logs state=directory
   - name: Capture gateload logs
-    shell: mkdir -p /home/centos/logs && /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/logs -index main -sourcetype sync_gateway_logs -auth admin:changeme
     sudo: true
   - name: kill collect_url_requests.sh
     shell: pkill -f "collect_url_requests.sh"
@@ -132,10 +127,8 @@
     ignore_errors: yes
   - name: copy collect_url_requests.sh to host
     template: src=./files/collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=centos mode=0777 force=true
-    sudo: true
   - name: Collect debug/vars logs
     shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:9876/debug/vars -f /home/centos/debug_vars.logs -t 60 1>/dev/null 2>&1) &)
-    sudo: true
   - name: Capture debug/vars logs
     shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/debug_vars.logs -index main -sourcetype sync_gateway_logs  -auth admin:changeme
     sudo: true
@@ -149,10 +142,13 @@
   - name: install pip
     shell: easy_install pip
     when: primary_gateload_node == gateload_node
+    sudo: true
   - name: install python-devel
     yum: pkg=python-devel state=latest
+    sudo: true
   - name: install development tools
     shell: yum groupinstall -y 'Development Tools'
+    sudo: true
   - name: Download couchbase.repo
     get_url: url=http://packages.couchbase.com/rpm/couchbase-centos62-x86_64.repo dest=/etc/yum.repos.d/couchbase.repo
     when: primary_gateload_node == gateload_node
@@ -160,12 +156,15 @@
     shell: yum check-update
     when: primary_gateload_node == gateload_node
     ignore_errors: yes
+    sudo: true
   - name: install libcouchbase2-libevent libcouchbase-devel
     shell: sudo yum install -y libcouchbase2-libevent libcouchbase-devel --skip-broken
     when: primary_gateload_node == gateload_node
+    sudo: true
   - name: install cbagent requirements
     shell: cd /home/centos/cbagent && pip install -r requirements.txt
     when: primary_gateload_node == gateload_node
+    sudo: true
   - name: copy temp_cbagent_config_template.conf to host
     template: src=../../temp_cbagent_config_template.conf dest=/home/centos/cbagent/temp_cbagent_stats_monitor.spec force=true
     when: primary_gateload_node == gateload_node
@@ -185,6 +184,7 @@
   - name: Capture couchbase stats
     shell: /opt/splunkforwarder/bin/splunk add monitor /tmp/stats_folder -index main -sourcetype sync_gateway_logs -auth admin:changeme
     when: primary_gateload_node == gateload_node
+    sudo: true
 
 
 - hosts: tag_Type_couchbaseserver
