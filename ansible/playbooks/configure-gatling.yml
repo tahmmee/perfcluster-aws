@@ -34,8 +34,13 @@
   - name: Set mvn link
     action: command update-alternatives --install /usr/bin/mvn mvn /opt/maven/bin/mvn 1
 
+
+  - name: Remove all files in sg-gatling-load except 'themes' folder that could be already attached to splunk
+    shell: cd /home/projects/sg-gatling-load/ && rm -rf .[^.] .??* && find ! -name 'themes' -type f -exec rm -f {} + && find ! -name 'themes' -type d -exec rm -rf {} + 2
+    ignore_errors: yes
+
   - name: Checkout sg-gatling load project from github
-    git: repo=https://github.com/couchbaselabs/sg-gatling-load.git dest=/home/projects/sg-gatling-load force=yes
+    shell: cd /home/projects/sg-gatling-load && git init && git remote add origin https://github.com/couchbaselabs/sg-gatling-load.git && git fetch && git checkout -t origin/master
 
   - name: Remove somelog.txt before running theme
     file: path=/home/projects/sg-gatling-load/somelog.txt state=absent
@@ -45,4 +50,3 @@
       dest=/home/projects/sg-gatling-load/pom.xml 
       regexp='<simulation.targetHosts>.*</simulation.targetHosts>' 
       line='<simulation.targetHosts>{% set comma = joiner(",") %} {% for item in groups.tag_Type_syncgateway | intersect(groups[ec2keyname]) -%} {{ comma() }}{{ hostvars[item].ec2_private_ip_address }} {%- endfor %}</simulation.targetHosts>'
-

@@ -186,6 +186,12 @@
     when: primary_gateload_node == gateload_node
     sudo: true
 
+  - file: path=/home/projects/sg-gatling-load/themes/gateload-sim/target/gatling/results state=directory
+    sudo: true
+  - name: Capture gateload logs
+    shell: /opt/splunkforwarder/bin/splunk add monitor /home/projects/sg-gatling-load/themes/gateload-sim/target/gatling/results -index main -sourcetype sync_gateway_logs -auth admin:changeme
+    sudo: true
+
 
 - hosts: tag_Type_couchbaseserver
   remote_user: centos
