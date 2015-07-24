@@ -28,7 +28,7 @@
   - name: create GOPATH directory
     shell: mkdir -p /opt/go
   - name: chown GOPATH to be owned by centos user
-    file: path=/opt/go owner=centos group=centos
+    file: path=/opt/go owner=centos group=centos recurse=yes
   - name: raise max file descriptors
     copy: src=files/security-nofiles-limit.conf dest=/etc/security/limits.d/20-nofiles.conf owner=root group=root mode=0644
 
