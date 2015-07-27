@@ -72,7 +72,7 @@ Alternatively, it can be kicked off via the AWS web UI with the restriction that
 * Run command
 ```
 ansible-playbook -l $KEYNAME install-go.yml && \
-ansible-playbook -l $KEYNAME install-couchbase-server-3.0.3.yml && \
+ansible-playbook -l $KEYNAME install-couchbase-server-3.1.0.yml && \
 ansible-playbook -l $KEYNAME build-sync-gateway.yml && \
 ansible-playbook -l $KEYNAME build-gateload.yml && \
 ansible-playbook -l $KEYNAME install-sync-gateway-service.yml && \
