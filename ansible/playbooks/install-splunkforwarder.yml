@@ -129,6 +129,7 @@
     template: src=./files/collect_url_requests.sh dest=/home/centos/collect_url_requests.sh owner=centos mode=0777 force=true
   - name: Collect debug/vars logs
     shell: ((nohup /home/centos/collect_url_requests.sh -r http://localhost:9876/debug/vars -f /home/centos/debug_vars.logs -t 60 1>/dev/null 2>&1) &)
+  - pause: seconds=5
   - name: Capture debug/vars logs
     shell: /opt/splunkforwarder/bin/splunk add monitor /home/centos/debug_vars.logs -index main -sourcetype gateload_expvars  -auth admin:changeme
     sudo: true
@@ -152,6 +153,7 @@
   - name: Download couchbase.repo
     get_url: url=http://packages.couchbase.com/rpm/couchbase-centos62-x86_64.repo dest=/etc/yum.repos.d/couchbase.repo
     when: primary_gateload_node == gateload_node
+    sudo: true
   - name: yum check-update
     shell: yum check-update
     when: primary_gateload_node == gateload_node
