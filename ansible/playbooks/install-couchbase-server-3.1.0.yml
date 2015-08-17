@@ -14,8 +14,8 @@
   sudo: true
   vars:
     couchbase_server_centos_ee_version: 3.1.0
-    couchbase_server_centos_ee_package: couchbase-server-enterprise_centos6_x86_64_{{ couchbase_server_centos_ee_version }}-1770-rel.rpm
-    couchbase_server_centos_ee_url: http://latestbuilds.hq.couchbase.com/{{ couchbase_server_centos_ee_package }}
+    couchbase_server_centos_ee_package: couchbase-server-enterprise-{{ couchbase_server_centos_ee_version }}-centos6.x86_64.rpm
+    couchbase_server_centos_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_centos_ee_version }}/{{ couchbase_server_centos_ee_package }}
 
     couchbase_server_admin: Administrator
     couchbase_server_password: password
