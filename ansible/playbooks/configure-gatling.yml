@@ -7,7 +7,7 @@
 
 - hosts: tag_Type_gateload
   vars:
-    ec2keyname: key_andy_mac
+    ec2keyname: key_{{ ec2_key_name }}
   remote_user: centos
   sudo: yes
 
