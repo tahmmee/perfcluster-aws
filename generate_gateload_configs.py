@@ -111,21 +111,20 @@ def main():
     sync_gateway_ips = sync_gateways()
 
     gateload_dicts = gateloads()
-    
+
     for idx, gateload_dict in enumerate(gateload_dicts):
-        
-        # calculate the user offset 
+        # calculate the user offset
         user_offset = idx * 13000 
         # assign a sync gateway to this gateload, get its ip
-        # upload only on remote hosts with sync_gateway_ips
-        if gateload_dict["ec2_private_ip_address"] in sync_gateway_ips:
-            gateload_ec2_id = gateload_dict["ec2_id"]
+        sync_gateway_private_ip = sync_gateway_ips[idx]
 
-            upload_gateload_config(
-                gateload_ec2_id,
-                gateload_dict["ec2_private_ip_address"],
-                user_offset
-            )
+        gateload_ec2_id = gateload_dict["ec2_id"]
+
+        upload_gateload_config(
+            gateload_ec2_id,
+            sync_gateway_private_ip,
+            user_offset
+        )
 
     print "Finished successfully"
 
