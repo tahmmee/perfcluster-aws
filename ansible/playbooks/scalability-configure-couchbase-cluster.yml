@@ -1,0 +1,40 @@
+---
+- hosts: tag_Type_couchbaseserver
+  remote_user: ubuntu
+  serial: 1
+  vars:
+    couchbase_server_primary_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+  connection: local
+  tasks:
+
+    - shell: echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node
+
+- hosts: tag_Type_couchbaseserver
+  remote_user: ubuntu
+  sudo: true
+  vars:
+    couchbase_server_centos_ee_version: 3.1.0
+    couchbase_server_centos_ee_package: couchbase-server-enterprise-{{ couchbase_server_centos_ee_version }}-centos6.x86_64.rpm
+    couchbase_server_centos_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_centos_ee_version }}/{{ couchbase_server_centos_ee_package }}
+
+    couchbase_server_admin: Administrator
+    couchbase_server_password: couchbase
+    couchbase_server_ram: "{{ansible_memtotal_mb|int}}"
+    couchbase_server_cluster_ram: "{{(0.8*couchbase_server_ram|int)|int}}"
+    couchbase_server_admin_port: 8091
+    couchbase_server_home_path: /home/ubuntu/sherlock/install/
+
+    couchbase_server_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+    couchbase_server_bucket_name: default
+    couchbase_server_bucket_type: couchbase
+    couchbase_server_bucket_ram: "{{ couchbase_server_cluster_ram }}"
+    couchbase_server_bucket_port: 11211
+    couchbase_server_bucket_replica: 3
+
+  tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+    - name: scalability-configure-couchbase-server
+      include: scalability-configure-couchbase-server.yml
+
