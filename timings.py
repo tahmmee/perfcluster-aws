@@ -10,7 +10,17 @@ includeSampleCount = 0
 for line in file:
     matchObj = re.match( r'\[\d+ +- +(\d+) *]us +\|#* +- +(\d+).*', line)
     if matchObj:
-        totalSampleCount += int(matchObj.group(2))
+        sample = int(matchObj.group(2))
+        totalSampleCount += sample
         if int(matchObj.group(1)) < threshold:
-            includeSampleCount += int(matchObj.group(2))
+            includeSampleCount += sample
+
+    matchObj = re.match( r'\[\d+ +- +(\d+) *]ms +\|#* +- +(\d+).*', line)
+    if matchObj:
+        sample = int(matchObj.group(2))
+        totalSampleCount += sample
+        if (int(matchObj.group(1)))*1000 < threshold:
+            includeSampleCount += sample
+
+
 print("%d %d %.3f\n" % (includeSampleCount,totalSampleCount,float(includeSampleCount)/float(totalSampleCount)))
