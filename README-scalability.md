@@ -63,13 +63,33 @@ This uses [troposphere](https://github.com/cloudtools/troposphere) to generate t
 
 The Cloudformation config is declared via a Python DSL, which then generates the Cloudformation Json.
 
-First you need to add the ami that has an install of CB on it to the scalability_template.py.
-Search for `TODO` and replace with the ami that you wish to use.
+### Modify the configurion file
+```
+NUM_CLIENTS=1
+NUM_COUCHBASE_SERVERS_DATA=4
+NUM_COUCHBASE_SERVERS_INDEX=1
+NUM_COUCHBASE_SERVERS_QUERY=1
+CLIENT_INSTANCE_TYPE="c3.xlarge"
+COUCHBASE_INSTANCE_TYPE="c3.8xlarge"
+```
 
-Generate template after changes to the python file:
+You also need to add the ami that has an install of CB on it to scalability_couchbase.py.
+
+### Generate the templates
+```
+$ python scalability_top.py > scalability_top.json
+$ python scalability_vpc.py > scalability_vpc.json
+$ python scalability_couchbase.py > scalability_couchbase.json
+```
+
+## Upload to S3
+
+Because of the size of the templates they need to be uploaded to S3 before they can be run.  This can be achieved using the aws.sh script, which uploads to a bucket called cb-scalability. (To avoid conflicts the script can be modified to use an alternate bucket.)
 
 ```
-$ python scalability_template.py > scalability_template.json
+$ ./aws.sh scalability_top.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_vpc.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_couchbase.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 ```
 
 ## Install steps
@@ -79,20 +99,17 @@ $ python scalability_template.py > scalability_template.json
 **Via AWS CLI**
 
 ```
-aws cloudformation create-stack --stack-name ScalabilityPerfCluster --region eu-west-1 \
---template-body "file://scalability_template.json" \
---parameters "ParameterKey=KeyName,ParameterValue=<your_keypair_name>"
+aws cloudformation create-stack --stack-name ScalabilityPerfCluster --region eu-west-1 --template-url https://s3-eu-west-1.amazonaws.com/cb-scalability/scalability_top.json  --parameters "ParameterKey=KeyName,ParameterValue=<your_keypair_name>"
 ```
 
 Note: CloudFormation is a top-level AWS service (i.e. like EC2 and VPC).  If you click on the CloudFormation service you should see the stack ScalabilityPerfCluster
 
 ### Provision EC2 instances
 
-* `cd ansible/playbooks`
-* `export KEYNAME=key_<your_keyname_name>` 
-* Run command
 ```
-ansible-playbook -l $KEYNAME scalability-configure-couchbase-cluster.yml
+cd ansible/playbooks
+export KEYNAME=key_<your_keyname_name>
+ansible-playbook -l $KEYNAME scalability-configure-test1-single-bucket-heterogeneous-couchbase.yml
 ```
 
 ## Viewing instances by type
