@@ -1,10 +1,10 @@
 #!/bin/bash
 file="$1"
 
-key_id="$2"
-key_secret="$3"
+key_id="$3"
+key_secret="$4"
 path="$1"
-bucket="cb-scalability"
+bucket="$2"
 content_type="application/octet-stream"
 date="$(LC_ALL=C date -u +"%a, %d %b %Y %X %z")"
 md5="$(openssl md5 -binary < "$file" | base64)"

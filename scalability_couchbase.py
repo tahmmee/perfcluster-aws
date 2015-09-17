@@ -34,7 +34,7 @@ securitygroupidparameter = t.add_parameter(Parameter(
 for i in xrange(configuration.NUM_COUCHBASE_SERVERS_DATA):
     name = "couchbaseserverdata{}".format(i)
     instance = ec2.Instance(name)
-    instance.ImageId = "ami-31371646"  # RC4.0-no-pid-file
+    instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
@@ -45,7 +45,7 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_DATA):
 for i in xrange(configuration.NUM_COUCHBASE_SERVERS_INDEX):
     name = "couchbaseserverindex{}".format(i)
     instance = ec2.Instance(name)
-    instance.ImageId = "ami-31371646"  # RC4.0-no-pid-file
+    instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
@@ -57,7 +57,7 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_INDEX):
 for i in xrange(configuration.NUM_COUCHBASE_SERVERS_QUERY):
     name = "couchbaseserverquery{}".format(i)
     instance = ec2.Instance(name)
-    instance.ImageId = "ami-31371646"  # RC4.0-no-pid-file
+    instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
@@ -69,7 +69,7 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_QUERY):
 for i in xrange(configuration.NUM_CLIENTS):
     name = "clients{}".format(i)
     instance = ec2.Instance(name)
-    instance.ImageId = "ami-d61d53a1"  # libcouchbase with threaded in key
+    instance.ImageId = configuration.CLIENT_IMAGE
     instance.InstanceType = configuration.CLIENT_INSTANCE_TYPE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)

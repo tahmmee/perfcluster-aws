@@ -65,15 +65,16 @@ The Cloudformation config is declared via a Python DSL, which then generates the
 
 ### Modify the configurion file
 ```
-NUM_CLIENTS=1
-NUM_COUCHBASE_SERVERS_DATA=4
+NUM_CLIENTS=64
+NUM_COUCHBASE_SERVERS_DATA=128
 NUM_COUCHBASE_SERVERS_INDEX=1
 NUM_COUCHBASE_SERVERS_QUERY=1
 CLIENT_INSTANCE_TYPE="c3.xlarge"
-COUCHBASE_INSTANCE_TYPE="c3.8xlarge"
+COUCHBASE_INSTANCE_TYPE="r3.4xlarge"
+CLIENT_IMAGE="ami-xxxxxxxx"
+COUCHBASE_IMAGE="ami-zzzzzzzz"
 ```
-
-You also need to add the ami that has an install of CB on it to scalability_couchbase.py.
+The COUCHBASE_IMAGE needs to contain an installation of couchbase, that has not been configured.
 
 ### Generate the templates
 ```
@@ -87,9 +88,13 @@ $ python scalability_couchbase.py > scalability_couchbase.json
 Because of the size of the templates they need to be uploaded to S3 before they can be run.  This can be achieved using the aws.sh script, which uploads to a bucket called cb-scalability. (To avoid conflicts the script can be modified to use an alternate bucket.)
 
 ```
-$ ./aws.sh scalability_top.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_vpc.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_couchbase.json $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ export BUCKET_NAME=cb_scalability
+```
+
+```
+$ ./aws.sh scalability_top.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_vpc.json $BUCKETNAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_couchbase.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 ```
 
 ## Install steps
