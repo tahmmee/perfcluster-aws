@@ -7,6 +7,6 @@ NUM_COUCHBASE_SERVERS_QUERY=1
 CLIENT_INSTANCE_TYPE="c3.xlarge"
 COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
 
-CLIENT_IMAGE="ami-d61d53a1" # libcouchbase with threaded in key
-COUCHBASE_IMAGE="ami-31371646" # RC4.0-no-pid-file
+CLIENT_IMAGE="ami-xxxxxxxx"
+COUCHBASE_IMAGE="ami-yyyyyyyy"
 
