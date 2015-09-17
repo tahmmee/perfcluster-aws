@@ -12,7 +12,7 @@ $ sudo apt-get install python-pip
 $ sudo apt-get install python-dev
 $ sudo apt-get install git
 
-$ git clone https://github.com/couchbaselabs/perfcluster-aws.git
+$ git clone https://github.com/owendCB/perfcluster-aws.git
 ```
 **Python Dependencies**
 
