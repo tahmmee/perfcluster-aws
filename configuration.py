@@ -12,4 +12,4 @@ COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
 CLIENT_IMAGE="ami-xxxxxxxx"
 COUCHBASE_IMAGE="ami-yyyyyyyy"
 
-BUCKET_NAME="scalability-owend"
+BUCKET_NAME="aaaaaaaaaaaaaaa"
