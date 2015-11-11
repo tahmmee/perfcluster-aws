@@ -8,7 +8,7 @@ AVAILABILITY_ZONE="us-east-1a"
 CLIENT_INSTANCE_TYPE="c3.xlarge"
 COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
 
-CLIENT_IMAGE="ami-d1e79abb" # client-rc4.0-views-rate-fix-cbc-views-populate-fix
-COUCHBASE_IMAGE="ami-29c9964c" # CB-RC4.0-THP-couch_create-ulimit-4K
+CLIENT_IMAGE="ami-xxxxxxxx"
+COUCHBASE_IMAGE="ami-yyyyyyyy"
 
 BUCKET_NAME="scalability-owend"
