@@ -65,14 +65,22 @@ The Cloudformation config is declared via a Python DSL, which then generates the
 
 ### Modify the configurion file
 ```
-NUM_CLIENTS=64
-NUM_COUCHBASE_SERVERS_DATA=128
+NUM_CLIENTS=2
+NUM_COUCHBASE_SERVERS_DATA=4
+NUM_COUCHBASE_SERVERS_DATA_NEW=0
 NUM_COUCHBASE_SERVERS_INDEX=1
 NUM_COUCHBASE_SERVERS_QUERY=1
+
+S3_REGION="eu-west-1"
+AVAILABILITY_ZONE="us-east-1a"
 CLIENT_INSTANCE_TYPE="c3.xlarge"
-COUCHBASE_INSTANCE_TYPE="r3.4xlarge"
+COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
+
 CLIENT_IMAGE="ami-xxxxxxxx"
-COUCHBASE_IMAGE="ami-zzzzzzzz"
+COUCHBASE_IMAGE="ami-yyyyyyyy"
+
+BUCKET_NAME="scalability-owend"
+
 ```
 The COUCHBASE_IMAGE needs to contain an installation of couchbase, that has not been configured.
 
@@ -89,12 +97,13 @@ Because of the size of the templates they need to be uploaded to S3 before they 
 
 ```
 $ export BUCKET_NAME=cb_scalability
+$ export S3_REGION=eu-west-1
 ```
 
 ```
-$ ./aws.sh scalability_top.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_vpc.json $BUCKETNAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_couchbase.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_top.json $S3_REGION $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_vpc.json $S3_REGION $BUCKETNAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_couchbase.json $S3_REGION $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 ```
 
 ## Install steps
