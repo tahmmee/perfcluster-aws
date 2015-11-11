@@ -6,6 +6,7 @@
 
 from troposphere import Ref, Template, Parameter, Output, Join, GetAtt, Tags
 import troposphere.ec2 as ec2
+import configuration
 
 t = Template()
 
@@ -57,6 +58,7 @@ def createCouchbaseRoute(t, gateway, routetable):
 def createCouchbaseSubnet(t, vpc):
     couchbaseSubnet = t.add_resource(ec2.Subnet(
        'SUBNET',
+        AvailabilityZone = configuration.AVAILABILITY_ZONE,
         CidrBlock='10.0.0.0/16',
         MapPublicIpOnLaunch='true',
         Tags=Tags(Name=Join('', ['subnet-scalability-', Ref('AWS::Region')])),
@@ -91,6 +93,12 @@ def createCouchbaseSecurityGroups(t, vpc):
             ToPort="8091",
             CidrIp="0.0.0.0/0",
         ),
+        ec2.SecurityGroupRule(
+            IpProtocol="tcp",
+            FromPort="8092",
+            ToPort="8092",
+            CidrIp="0.0.0.0/0",
+        ),
         ec2.SecurityGroupRule(   # sync gw user port
             IpProtocol="tcp",
             FromPort="4984",
@@ -117,7 +125,6 @@ def createCouchbaseSecurityGroups(t, vpc):
     cbIngressPorts = [
         {"FromPort": "4369", "ToPort": "4369" },    # couchbase server
         {"FromPort": "5984", "ToPort": "5984" },    # couchbase server
-        {"FromPort": "8092", "ToPort": "8092" },    # couchbase server
         {"FromPort": "11209", "ToPort": "11209" },  # couchbase server 
         {"FromPort": "11210", "ToPort": "11210" },  # couchbase server
         {"FromPort": "11211", "ToPort": "11211" },  # couchbase server

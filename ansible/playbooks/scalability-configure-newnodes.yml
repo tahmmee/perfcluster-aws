@@ -1,0 +1,65 @@
+---
+- hosts: tag_Type_couchbaseserver_data_new
+  remote_user: ubuntu
+  sudo: true
+  vars:
+    couchbase_server_ubuntu_ee_version: 4.0.0-rc0
+    couchbase_server_ubuntu_ee_package: couchbase-server-enterprise-{{ couchbase_server_ubuntu_ee_version }}-ubuntu14.04_amd64.rpm
+    couchbase_server_ubuntu_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_ubuntu_ee_version }}/{{ couchbase_server_ubuntu_ee_package }}
+
+    couchbase_server_admin: Administrator
+    couchbase_server_password: couchbase
+    couchbase_server_ram: "{{ansible_memtotal_mb|int}}"
+    couchbase_server_cluster_ram: "{{(0.8*couchbase_server_ram|int)|int}}"
+    couchbase_server_admin_port: 8091
+    couchbase_server_home_path: /opt/couchbase/
+    couchbase_server_data_path: "/mnt/cbdata"
+    couchbase_server_index_path: "/mnt/cbindex"
+
+    couchbase_server_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+    couchbase_server_node_type: "{{hostvars[ec2_ip_address]['ec2_tag_Type']}}"
+    couchbase_server_bucket_name0: default0
+    couchbase_server_bucket_type: couchbase
+    couchbase_server_bucket_ram: "{{ couchbase_server_cluster_ram |int }}"
+    couchbase_server_bucket_port: 11211
+    couchbase_server_bucket_replica: 3
+
+  tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+
+    - name: mk filesystem
+      shell: mkfs -t ext4 /dev/xvdb
+
+    - name: mount /dev/xvdb
+      shell: mount /dev/xvdb /mnt
+
+    - name: chown couchbase:couchbase for /mnt
+      shell: chown couchbase:couchbase /mnt
+
+    - name: mkdir cbdata directory
+      shell: mkdir -p {{ couchbase_server_data_path }}
+
+    - name: mkdir cbindex directory
+      shell: mkdir -p {{ couchbase_server_index_path }}
+
+    - name: chown couchbase:couchbase
+      shell: chown couchbase:couchbase {{ couchbase_server_data_path }}
+
+    - name: chown couchbase:couchbase
+      shell: chown couchbase:couchbase {{ couchbase_server_index_path }}
+
+    - name: Wait for node to be listening on port 8091
+      wait_for: port=8091 delay=30
+
+    - name: Wait for node to be listening on port 8091
+      wait_for: port=8091 delay=30
+
+    - name: Initialize all nodes
+      shell: "{{ couchbase_server_home_path }}/bin/couchbase-cli node-init -c {{ couchbase_server_node }}:{{ couchbase_server_admin_port }} --user={{ couchbase_server_admin }} --password={{ couchbase_server_password }} --cluster-init-username={{ couchbase_server_admin }} --node-init-hostname={{ couchbase_server_node }} --node-init-data-path={{ couchbase_server_data_path }} --node-init-index-path={{ couchbase_server_index_path }}"
+
+    - name: Join additional cluster nodes - data_new
+      shell: "{{ couchbase_server_home_path }}/bin/couchbase-cli server-add -c {{ couchbase_server_primary_node }}:{{ couchbase_server_admin_port }} --user={{ couchbase_server_admin }} --password={{ couchbase_server_password }} --server-add={{ couchbase_server_node }}:{{ couchbase_server_admin_port }} --server-add-username={{ couchbase_server_admin }} --server-add-password={{ couchbase_server_password }} --services=data"
+      when: not (couchbase_server_node == couchbase_server_primary_node ) and couchbase_server_node_type == 'couchbaseserver_data_new'
+

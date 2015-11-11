@@ -36,10 +36,23 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_DATA):
     instance = ec2.Instance(name)
     instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
+    instance.AvailabilityZone = configuration.AVAILABILITY_ZONE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
     instance.KeyName = Ref(keynameparameter)
     instance.Tags=Tags(Name=name, Type="couchbaseserver_data")
+    t.add_resource(instance)
+
+for i in xrange(configuration.NUM_COUCHBASE_SERVERS_DATA_NEW):
+    name = "couchbaseserverdatanew{}".format(i)
+    instance = ec2.Instance(name)
+    instance.ImageId = configuration.COUCHBASE_IMAGE
+    instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
+    instance.AvailabilityZone = configuration.AVAILABILITY_ZONE
+    instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
+    instance.SubnetId = Ref(subnetidparameter)
+    instance.KeyName = Ref(keynameparameter)
+    instance.Tags=Tags(Name=name, Type="couchbaseserver_data_new")
     t.add_resource(instance)
 
 for i in xrange(configuration.NUM_COUCHBASE_SERVERS_INDEX):
@@ -47,6 +60,7 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_INDEX):
     instance = ec2.Instance(name)
     instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
+    instance.AvailabilityZone = configuration.AVAILABILITY_ZONE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
     instance.KeyName = Ref(keynameparameter)
@@ -59,18 +73,19 @@ for i in xrange(configuration.NUM_COUCHBASE_SERVERS_QUERY):
     instance = ec2.Instance(name)
     instance.ImageId = configuration.COUCHBASE_IMAGE
     instance.InstanceType = configuration.COUCHBASE_INSTANCE_TYPE
+    instance.AvailabilityZone = configuration.AVAILABILITY_ZONE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
     instance.KeyName = Ref(keynameparameter)
     instance.Tags=Tags(Name=name, Type="couchbaseserver_query")
     t.add_resource(instance)
 
-
 for i in xrange(configuration.NUM_CLIENTS):
     name = "clients{}".format(i)
     instance = ec2.Instance(name)
     instance.ImageId = configuration.CLIENT_IMAGE
     instance.InstanceType = configuration.CLIENT_INSTANCE_TYPE
+    instance.AvailabilityZone = configuration.AVAILABILITY_ZONE
     instance.SecurityGroupIds = [ Ref(securitygroupidparameter)]
     instance.SubnetId = Ref(subnetidparameter)
     instance.KeyName = Ref(keynameparameter)

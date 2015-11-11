@@ -1,0 +1,53 @@
+---
+- hosts: tag_Type_couchbaseserver_data
+  remote_user: ubuntu
+  serial: 1
+  vars:
+    couchbase_server_primary_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+  connection: local
+  tasks:
+    - shell: echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node
+
+
+- hosts: tag_Type_couchbaseserver_data:tag_Type_couchbaseserver_query:tag_Type_couchbaseserver_index
+  remote_user: ubuntu
+  sudo: true
+  vars:
+    couchbase_server_ubuntu_ee_version: 4.0.0-rc0
+    couchbase_server_ubuntu_ee_package: couchbase-server-enterprise-{{ couchbase_server_ubuntu_ee_version }}-ubuntu14.04_amd64.rpm
+    couchbase_server_ubuntu_ee_url: http://packages.couchbase.com/releases/{{ couchbase_server_ubuntu_ee_version }}/{{ couchbase_server_ubuntu_ee_package }}
+
+    couchbase_server_admin: Administrator
+    couchbase_server_password: couchbase
+    couchbase_server_ram: "{{ansible_memtotal_mb|int}}"
+    couchbase_server_cluster_ram: "{{(0.2*couchbase_server_ram|int)|int}}"
+    couchbase_server_admin_port: 8091
+    couchbase_server_home_path: /opt/couchbase/
+    couchbase_server_data_path: "/mnt/cbdata"
+    couchbase_server_index_path: "/mnt/cbindex"
+
+    couchbase_server_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+    couchbase_server_node_type: "{{hostvars[ec2_ip_address]['ec2_tag_Type']}}"
+    couchbase_server_bucket_name0: default0
+    couchbase_server_bucket_type: couchbase
+    couchbase_server_bucket_ram: "{{ couchbase_server_cluster_ram |int }}"
+    couchbase_server_bucket_port: 11211
+    couchbase_server_bucket_replica: 3
+    docs_per_node: 3223060480
+
+  tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+
+    - name: Stop couchbase server
+      shell: "service couchbase-server stop"
+
+    - name: Run couch_create
+      command: "/opt/couchbase/bin/couch_create -k {{ docs_per_node }} --doc-len 1024 -r"
+      args:
+        chdir: "{{ couchbase_server_data_path }}/default0"
+
+    - name: Start couchbase server
+      shell: "service couchbase-server start"
+

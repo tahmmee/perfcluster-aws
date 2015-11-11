@@ -1,0 +1,20 @@
+---
+- hosts: tag_Type_clients
+  remote_user: ubuntu
+  sudo: true
+  vars:
+    couchbase_server_admin: Administrator
+    couchbase_server_password: couchbase
+    couchbase_server_admin_port: 8091
+
+    couchbase_server_bucket_name0: default0
+    couchbase_server_bucket_type: couchbase
+
+  tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+
+    - name: Stop pillowfight
+      command: killall cbc-pillowfight
+

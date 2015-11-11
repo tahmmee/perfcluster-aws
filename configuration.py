@@ -1,12 +1,14 @@
-NUM_CLIENTS=64
-NUM_COUCHBASE_SERVERS_DATA=128
+NUM_CLIENTS=2
+NUM_COUCHBASE_SERVERS_DATA=4
+NUM_COUCHBASE_SERVERS_DATA_NEW=0
 NUM_COUCHBASE_SERVERS_INDEX=1
 NUM_COUCHBASE_SERVERS_QUERY=1
 
-
+AVAILABILITY_ZONE="us-east-1a"
 CLIENT_INSTANCE_TYPE="c3.xlarge"
 COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
 
-CLIENT_IMAGE="ami-d61d53a1" # libcouchbase with threaded in key
-COUCHBASE_IMAGE="ami-31371646" # RC4.0-no-pid-file
+CLIENT_IMAGE="ami-d1e79abb" # client-rc4.0-views-rate-fix-cbc-views-populate-fix
+COUCHBASE_IMAGE="ami-29c9964c" # CB-RC4.0-THP-couch_create-ulimit-4K
 
+BUCKET_NAME="scalability-owend"

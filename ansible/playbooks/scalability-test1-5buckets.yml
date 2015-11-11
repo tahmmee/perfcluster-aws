@@ -1,0 +1,62 @@
+---
+- hosts: tag_Type_clients
+  remote_user: ubuntu
+  vars:
+    couchbase_server_admin: Administrator
+    couchbase_server_password: couchbase
+    couchbase_server_admin_port: 8091
+
+    couchbase_server_bucket_name0: default0
+    couchbase_server_bucket_name1: default1
+    couchbase_server_bucket_name2: default2
+    couchbase_server_bucket_name3: default3
+    couchbase_server_bucket_name4: default4
+    couchbase_server_bucket_type: couchbase
+
+  tasks:
+    - name: set couchbase_server_primary_node variable
+      set_fact:
+        couchbase_server_primary_node: "{{ lookup('file', '../../temp_couchbase_server_primary_node') }}"
+
+    - name: Run cb-pillowfight0
+      command: cbc-pillowfight -U couchbase://{{  couchbase_server_primary_node  }}/default0 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0
+    - name: Run cb-pillowfight1
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default1 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight2
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default2 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight3
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default3 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight4
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default4 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight5
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default0 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight6
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default1 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight7
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default2 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight8
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default3 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0      
+    - name: Run cb-pillowfight9
+      shell: cbc-pillowfight -U couchbase://{{couchbase_server_primary_node}}/default4 -r 100 -m 1024 -M 1024 -t 1 -I 1000000 -B 100 --rate-limit 6500
+      async: 100000000
+      poll: 0
+
+

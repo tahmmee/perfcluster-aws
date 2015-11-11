@@ -1,0 +1,7 @@
+{ "views" :
+      { "test" :
+           { "map" : "function (doc, meta) {emit(doc.salesperson, doc.cost);}",
+             "reduce" : "_sum"
+           } 
+      }
+}

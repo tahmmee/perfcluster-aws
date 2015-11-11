@@ -1,0 +1,34 @@
+---
+- hosts: tag_Type_couchbaseserver_data
+  remote_user: ubuntu
+  serial: 1
+  vars:
+    couchbase_server_primary_node: "{{hostvars[ec2_ip_address]['ec2_private_dns_name']}}"
+    couchbase_server_primary_node_public: "{{hostvars[ec2_ip_address]['ec2_public_dns_name']}}"
+  connection: local
+  tasks:
+    - shell: echo {{couchbase_server_primary_node}} > ../../temp_couchbase_server_primary_node
+    - shell: echo {{couchbase_server_primary_node_public}} > ../../temp_couchbase_server_primary_node_public
+
+
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+   - name: set couchbase_server_primary_node_public variable
+     set_fact:
+       couchbase_server_primary_node_public: "{{ lookup('file', '../../temp_couchbase_server_primary_node_public') }}"
+
+   - name: Add view to default0
+     shell: "curl -X PUT -H 'Content-Type: application/json' http://{{ couchbase_server_primary_node_public }}/default0/_design/1 -d @1.ddoc"
+
+   - name: Add view to default1
+     shell: "curl -X PUT -H 'Content-Type: application/json' http://{{ couchbase_server_primary_node_public }}/default1/_design/1 -d @1.ddoc"
+
+   - name: Add view to default2
+     shell: "curl -X PUT -H 'Content-Type: application/json' http://{{ couchbase_server_primary_node_public }}/default2/_design/1 -d @1.ddoc"
+
+   - name: Add view to default3
+     shell: "curl -X PUT -H 'Content-Type: application/json' http://{{ couchbase_server_primary_node_public }}/default3/_design/1 -d @1.ddoc"
+
+   - name: Add view to default4
+     shell: "curl -X PUT -H 'Content-Type: application/json' http://{{ couchbase_server_primary_node_public }}/default4/_design/1 -d @1.ddoc"
