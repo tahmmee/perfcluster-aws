@@ -25,7 +25,7 @@ keyname_param = t.add_parameter(Parameter(
 
 
 instance = cloudformation.Stack("vpcStack")
-instance.TemplateURL =  "https://s3-"+ configuration.S3_REGION + ".amazonaws.com/" + configuration.BUCKET_NAME + "/scalability_vpc.json"
+instance.TemplateURL =  "https://s3.amazonaws.com/" + configuration.BUCKET_NAME + "/scalability_vpc.json"
 instance.TimeoutInMinutes = 60
 t.add_resource(instance)
 
@@ -36,7 +36,7 @@ p = {"KeyNameParameter": Ref("KeyName"), "SecurityGroupIdParameter" : GetAtt("vp
 
 
 instance = cloudformation.Stack("couchbaseStack")
-instance.TemplateURL = "https://s3-" + configuration.S3_REGION + ".amazonaws.com/" + configuration.BUCKET_NAME + "/scalability_couchbase.json"
+instance.TemplateURL = "https://s3.amazonaws.com/" + configuration.BUCKET_NAME + "/scalability_couchbase.json"
 instance.TimeoutInMinutes = 60
 instance.Parameters = p
 t.add_resource(instance)
