@@ -71,15 +71,14 @@ NUM_COUCHBASE_SERVERS_DATA_NEW=0
 NUM_COUCHBASE_SERVERS_INDEX=1
 NUM_COUCHBASE_SERVERS_QUERY=1
 
-S3_REGION="eu-west-1"
 AVAILABILITY_ZONE="us-east-1a"
 CLIENT_INSTANCE_TYPE="c3.xlarge"
-COUCHBASE_INSTANCE_TYPE="r3.4xlarge" #c3.8xlarge"
+COUCHBASE_INSTANCE_TYPE="r3.4xlarge"
 
 CLIENT_IMAGE="ami-xxxxxxxx"
 COUCHBASE_IMAGE="ami-yyyyyyyy"
 
-BUCKET_NAME="scalability-owend"
+BUCKET_NAME="cb_scalability"
 
 ```
 The COUCHBASE_IMAGE needs to contain an installation of couchbase, that has not been configured.
@@ -97,13 +96,12 @@ Because of the size of the templates they need to be uploaded to S3 before they 
 
 ```
 $ export BUCKET_NAME=cb_scalability
-$ export S3_REGION=eu-west-1
 ```
 
 ```
-$ ./aws.sh scalability_top.json $S3_REGION $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_vpc.json $S3_REGION $BUCKETNAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
-$ ./aws.sh scalability_couchbase.json $S3_REGION $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_top.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_vpc.json $BUCKETNAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
+$ ./aws.sh scalability_couchbase.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
 ```
 
 ## Install steps
@@ -123,7 +121,14 @@ Note: CloudFormation is a top-level AWS service (i.e. like EC2 and VPC).  If you
 ```
 cd ansible/playbooks
 export KEYNAME=key_<your_keyname_name>
-ansible-playbook -l $KEYNAME scalability-configure-test1-single-bucket-heterogeneous-couchbase.yml
+ansible-playbook -l $KEYNAME scalability-configure-test1-1-bucket-heterogeneous-couchbase.yml
+```
+
+### Running test on configured instance
+```
+cd ansible/playbooks
+export KEYNAME=key_<your_keyname_name>
+ansible-playbook -l $KEYNAME scalability-test1-1bucket.yml
 ```
 
 ## Viewing instances by type
