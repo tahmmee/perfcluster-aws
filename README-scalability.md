@@ -94,9 +94,14 @@ $ python scalability_couchbase.py > scalability_couchbase.json
 
 Because of the size of the templates they need to be uploaded to S3 before they can be run.  This can be achieved using the aws.sh script, which uploads to a bucket called cb-scalability. (To avoid conflicts the script can be modified to use an alternate bucket.)
 
+### Creating the bucket
+Login to AWS.  Go to S3 and select create bucket.  Select US standard as the Region.  Use the unique bucket name you specified in the configuration.py file.  The same bucket name is also used in the export below.
+
 ```
 $ export BUCKET_NAME=cb_scalability
 ```
+### Uploading the files
+You now can upload the json files to your S3 bucket using the following scripts.
 
 ```
 $ ./aws.sh scalability_top.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY
@@ -110,8 +115,11 @@ $ ./aws.sh scalability_couchbase.json $BUCKET_NAME $AWS_ACCESS_KEY_ID $AWS_SECRE
 
 **Via AWS CLI**
 
+Note the template-url contains the bucket name (which is cb-scalability in the example below).
+So you will need to change this to your bucket name
+
 ```
-aws cloudformation create-stack --stack-name ScalabilityPerfCluster --region eu-west-1 --template-url https://s3-eu-west-1.amazonaws.com/cb-scalability/scalability_top.json  --parameters "ParameterKey=KeyName,ParameterValue=<your_keypair_name>"
+aws cloudformation create-stack --stack-name ScalabilityPerfCluster --region eu-west-1 --template-url https://cb-scalability.s3.amazonaws.com/scalability_top.json --parameters "ParameterKey=KeyName,ParameterValue=<your_keypair_name>"
 ```
 
 Note: CloudFormation is a top-level AWS service (i.e. like EC2 and VPC).  If you click on the CloudFormation service you should see the stack ScalabilityPerfCluster
